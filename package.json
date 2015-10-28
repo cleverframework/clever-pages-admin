@@ -30,6 +30,7 @@
     "flux": "^2.0.1",
     "foundation-sites": "^5.5.3",
     "jquery": "^2.1.4",
+    "jwt-decode": "^1.4.0",
     "react": "^0.13",
     "react-mixin": "^1.1.0",
     "react-redirect": "^1.0.0",
