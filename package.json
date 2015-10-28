@@ -1,0 +1,49 @@
+{
+  "name": "pages-admin",
+  "version": "0.1.0",
+  "visible": false,
+  "author": "Jacopo Daeli <jacopo.daeli@gmail.com>",
+  "clever": "0.1.x",
+  "scripts": {
+    "build": "npm run build-js && npm run build-css",
+    "watch": "npm run watch-js && npm run watch-css",
+    "build-js": "browserify --extension=.jsx --extension=.js assets/src/js/app.jsx | uglifyjs > assets/dist/index.js",
+    "watch-js": "watchify --extension=.jsx --extension=.js assets/src/js/app.jsx -o assets/dist/index.js --debug --verbose",
+    "watch-css": "sourdough -w -v assets/src/styl/index.styl assets/dist/index.css",
+    "build-css": "sourdough -c assets/src/styl/index.styl assets/dist/index.css"
+  },
+  "browser": {
+    "jquery": "./node_modules/jquery/dist/jquery.js",
+    "foundation": "./node_modules/foundation-sites/js/foundation.js"
+  },
+  "browserify-shim": {
+    "jquery": "$",
+    "foundation": "foundation"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "flux": "^2.0.1",
+    "foundation-sites": "^5.5.3",
+    "jquery": "^2.1.4",
+    "react": "^0.13",
+    "react-mixin": "^1.1.0",
+    "react-redirect": "^1.0.0",
+    "react-router": "^0.13.2",
+    "reqwest": "^1.1.5",
+    "when": "^3.7.2"
+  },
+  "devDependencies": {
+    "babelify": "^6.1.0",
+    "browser-sync": "^2.1.6",
+    "browserify": "^11.2.0",
+    "browserify-shim": "^3.8.10",
+    "sourdough-preprocessor": "^1.0.0",
+    "uglify-js": "^2.4.15",
+    "watchify": "^2.1.1"
+  }
+}
