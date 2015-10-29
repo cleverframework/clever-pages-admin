@@ -1,4 +1,4 @@
-import { CREATE_PAGE, EDIT_PAGE, DELETE_PAGE } from '../constants/Constants'
+import { LOAD_PAGES, CREATE_PAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
 import BaseStore from './BaseStore'
 
 class PagesStore extends BaseStore {
@@ -6,11 +6,27 @@ class PagesStore extends BaseStore {
   constructor () {
     super()
     this.subscribe(() => this._registerToActions.bind(this))
-    this._pages = null
+    const cached = localStorage.getItem('pages')
+    let parsed = null
+    try {
+      parsed = JSON.parse(cached)
+    } catch(e) {
+      localStorage.removeItem('pages')
+    }
+
+    this._pages = parsed || []
+    this._filter = null
   }
 
-  _registerToActions(action) {
+  _registerToActions (action) {
+
     switch(action.actionType) {
+      case LOAD_PAGES:
+        // LOAD PAGES
+        this._pages = action.pages
+        this.emitChange()
+        localStorage.setItem('pages', JSON.stringify(action.pages))
+        break
       case CREATE_PAGE:
         // ADD NEW PAGE
         this.emitChange()
@@ -19,8 +35,10 @@ class PagesStore extends BaseStore {
         // EDIT PAGE
         this.emitChange()
         break
-      case EDIT_PAGE:
-        // EDIT PAGE
+      case SEARCH_PAGE:
+        // SEARCH PAGE
+        if (action.pageName === '') action.pageName = null
+        this._filter = action.pageName
         this.emitChange()
         break
       default:
@@ -29,9 +47,12 @@ class PagesStore extends BaseStore {
   }
 
   get pages() {
-    return this._pages
+    return this._pages.filter(page => {
+      if (this._filter) return !!page.name.match(new RegExp(this._filter, 'gi'))
+      return true
+    })
   }
 
 }
 
-export default new LoginStore()
+export default new PagesStore()

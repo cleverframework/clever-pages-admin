@@ -3,18 +3,16 @@ import foundation from 'foundation'
 import React from 'react'
 import Router, { Route } from 'react-router'
 import PagesApp from './components/PagesApp'
-import List from './components/List'
-import Edit from './components/Edit'
+import PageBox from './components/PageBox'
+import PageEdit from './components/PageEdit'
 import RouterContainer from './services/RouterContainer'
-import ListActions from './actions/ListActions'
-import EditActions from './actions/EditActions'
 
 $(document).foundation()
 
 const routes = (
   <Route handler={PagesApp}>
-    <Route name="list" path="/" handler={List}/>
-    <Route name="edit" handler={Edit}/>
+    <Route name="list" path="/" handler={PageBox}/>
+    <Route name="edit" path="/edit/?:pageId?" handler={PageEdit}/>
   </Route>
 )
 
@@ -25,5 +23,5 @@ RouterContainer.set(router)
 // Using pouchdb maybe ?
 
 router.run((Handler) => {
-  React.render(<Handler />, document.getElementById('content'))
+  React.render(<Handler />, document.getElementById('pages'))
 })

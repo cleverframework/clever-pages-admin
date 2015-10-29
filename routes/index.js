@@ -26,6 +26,18 @@ function isLogged(req, res, next) {
 // Exports
 module.exports = function(PagesAdminPackage, app, config) {
 
+  // Mock
+  router.get('/data', (req, res, next) => {
+    res.json([
+      {status: 'Published', name: 'Homepage'},
+      {status: 'Published', name: 'Page 2'},
+      {status: 'Unpublished', name: 'Page 3'},
+      {status: 'Published', name: 'Page 4'},
+      {status: 'Published', name: 'Page 5'},
+      {status: 'Maybe', name: 'Homepage 2'}
+    ])
+  })
+
   router.get('/', isLogged, (req, res, next) => {
     // TODO: Change clever-core for auto passing res.locals to render
     res.send(PagesAdminPackage.render('pages', res.locals))

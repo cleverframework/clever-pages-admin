@@ -1,46 +1,22 @@
 import request from 'reqwest'
 import when from 'when'
-import { LOGIN_URL, SIGNUP_URL } from '../constants/LoginConstants'
-import LoginActions from '../actions/LoginActions'
+import { API_PAGES_URL } from '../constants/Constants'
+import PagesActions from '../actions/PagesActions'
 
-class AuthService {
+class PagesService {
 
-  login (username, password) {
-    return this.handleAuth(when(request({
-      url: LOGIN_URL,
-      method: 'POST',
+  load () {
+    return when(request({
+      url: API_PAGES_URL + '/data',
+      method: 'GET',
       crossOrigin: true,
-      type: 'json',
-      data: {
-        username, password
-      }
-    })))
-  }
-
-  logout () {
-    LoginActions.logoutUser()
-  }
-
-  signup (username, password, extra) {
-    return this.handleAuth(when(request({
-      url: SIGNUP_URL,
-      method: 'POST',
-      crossOrigin: true,
-      type: 'json',
-      data: {
-        username, password, extra
-      }
-    })))
-  }
-
-  handleAuth (loginPromise) {
-    return loginPromise
-      .then(function(response) {
-        var jwt = response.id_token
-        LoginActions.loginUser(jwt)
-        return true
-      })
+      type: 'json'
+    }))
+    .then(res => {
+      PagesActions.load(res)
+      return true
+    })
   }
 }
 
-export default new AuthService()
+export default new PagesService()
