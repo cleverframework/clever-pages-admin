@@ -15,7 +15,7 @@ class PagesStore extends BaseStore {
     }
 
     this._pages = parsed || []
-    this._filter = null
+    this._filterText = null
   }
 
   _registerToActions (action) {
@@ -37,8 +37,8 @@ class PagesStore extends BaseStore {
         break
       case SEARCH_PAGE:
         // SEARCH PAGE
-        if (action.pageName === '') action.pageName = null
-        this._filter = action.pageName
+        if (action.filterText === '') action.filterText = null
+        this._filterText = action.filterText
         this.emitChange()
         break
       default:
@@ -46,11 +46,12 @@ class PagesStore extends BaseStore {
     }
   }
 
-  get pages() {
-    return this._pages.filter(page => {
-      if (this._filter) return !!page.name.match(new RegExp(this._filter, 'gi'))
-      return true
-    })
+  get pages () {
+    return this._pages
+  }
+
+  get filterText () {
+    return this._filterText
   }
 
 }

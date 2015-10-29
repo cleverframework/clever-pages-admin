@@ -23,14 +23,7 @@ export default class PageCreateForm extends React.Component {
     return (
       <div className="row">
         <div className="large-12 columns">
-          <div className="row collapse">
-            <div className="small-10 columns">
-              <input type="text" placeholder="Page name"/>
-            </div>
-            <div className="small-2 columns">
-              <button className="button postfix">Create new Page</button>
-            </div>
-          </div>
+          <button className="button">Create new Page</button>
         </div>
       </div>
     )

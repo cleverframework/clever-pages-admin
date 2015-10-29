@@ -13,7 +13,10 @@ export default class PageBox extends React.Component {
     super()
     const data = PagesStore.pages
     console.log(data)
-    this.state = { data: data }
+    this.state = {
+      data: data,
+      filterText: null
+    }
   }
 
   loadPagesFromServer () {
@@ -36,7 +39,8 @@ export default class PageBox extends React.Component {
 
   _onChange () {
     this.setState({
-      data: PagesStore.pages
+      data: PagesStore.pages,
+      filterText: PagesStore.filterText
     })
   }
 
@@ -48,7 +52,7 @@ export default class PageBox extends React.Component {
     return (
       <div className="pageBox">
         <PageSearchForm />
-        <PageList data={this.state.data} />
+        <PageList data={this.state.data} filterText={this.state.filterText} />
         <PageCreateForm />
       </div>
     )

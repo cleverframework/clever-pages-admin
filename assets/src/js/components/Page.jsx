@@ -12,7 +12,7 @@ export default class Page extends React.Component {
 
     return (
       <div className="panel page">
-        <h3 className="pageName">
+        <h3 className="filterText">
           <Link to="edit" params={{pageId: this.props.children}}>{this.props.children}</Link>
         </h3>
         {this.props.status}

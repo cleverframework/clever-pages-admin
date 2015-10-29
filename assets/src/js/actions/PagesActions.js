@@ -11,11 +11,11 @@ export default {
     })
   },
 
-  search (pageName) {
-    console.log('Searching: ' + pageName)
+  search (filterText) {
+    console.log('Searching: ' + filterText)
     AppDispatcher.dispatch({
       actionType: SEARCH_PAGE,
-      pageName: pageName
+      filterText: filterText
     })
   }
 
