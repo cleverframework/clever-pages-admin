@@ -2,20 +2,29 @@ import React from 'react/addons'
 import ReactMixin from 'react-mixin'
 import { Link } from 'react-router'
 
-export default class Page extends React.Component {
+const style = {
+  fontSize: '9px'
+}
 
-  constructor () {
-    super()
-  }
+export default class Page extends React.Component {
 
   render () {
 
     return (
       <div className="panel page">
-        <h3 className="filterText">
-          <Link to="edit" params={{pageId: this.props.children}}>{this.props.children}</Link>
-        </h3>
-        {this.props.status}
+        <div className="row">
+          <div className="small-8 columns">
+            <h3 className="pageName">
+              <Link to="edit" params={{pageId: this.props.children}}>{this.props.children}</Link>
+              <br />
+              <span style={style}>{this.props.status}</span>
+            </h3>
+          </div>
+          <div className="small-4 columns">
+            <br />
+            <button className="button tiny alert right">Delete</button>
+          </div>
+        </div>
       </div>
     )
 
