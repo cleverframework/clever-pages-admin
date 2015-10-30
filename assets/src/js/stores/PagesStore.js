@@ -29,6 +29,7 @@ class PagesStore extends BaseStore {
         break
       case CREATE_PAGE:
         // ADD NEW PAGE
+        this._pages = [action.page].concat(this._pages)
         this.emitChange()
         break
       case EDIT_PAGE:

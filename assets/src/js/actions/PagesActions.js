@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher.js'
-import { LOAD_PAGES, SEARCH_PAGE } from '../constants/Constants.js'
+import { LOAD_PAGES, CREATE_PAGE, SEARCH_PAGE } from '../constants/Constants.js'
 import RouterContainer from '../services/RouterContainer'
 
 export default {
@@ -12,10 +12,16 @@ export default {
   },
 
   search (filterText) {
-    console.log('Searching: ' + filterText)
     AppDispatcher.dispatch({
       actionType: SEARCH_PAGE,
       filterText: filterText
+    })
+  },
+
+  create (page) {
+    AppDispatcher.dispatch({
+      actionType: CREATE_PAGE,
+      page: page
     })
   }
 

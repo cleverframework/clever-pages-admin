@@ -19,7 +19,7 @@ export default class PageSearchForm extends React.Component {
     return (
       <div className="row collapse">
         <div className="large-12 columns">
-          <input className="text" placeholder="Search ..." id="filterText" ref="filterText" onChange={this.search.bind(this)} />
+          <input className="text" id="filterText" ref="filterText" onChange={this.search.bind(this)} placeholder="Search ..." />
         </div>
       </div>
     )

@@ -26,16 +26,27 @@ function isLogged(req, res, next) {
 // Exports
 module.exports = function(PagesAdminPackage, app, config) {
 
+  let db = [
+    {status: 'Published', name: 'Homepage'},
+    {status: 'Published', name: 'Page 2'},
+    {status: 'Unpublished', name: 'Page 3'},
+    {status: 'Published', name: 'Page 4'},
+    {status: 'Published', name: 'Page 5'},
+    {status: 'Maybe', name: 'Homepage 2'}
+  ]
+
   // Mock
   router.get('/data', (req, res, next) => {
-    res.json([
-      {status: 'Published', name: 'Homepage'},
-      {status: 'Published', name: 'Page 2'},
-      {status: 'Unpublished', name: 'Page 3'},
-      {status: 'Published', name: 'Page 4'},
-      {status: 'Published', name: 'Page 5'},
-      {status: 'Maybe', name: 'Homepage 2'}
-    ])
+    res.json(db)
+  })
+
+  router.post('/data', (req, res, next) => {
+
+    const newx = {status: 'Unpublished', name: req.body.name}
+
+    db = [newx].concat(db)
+
+    res.json(newx)
   })
 
   router.get('/', isLogged, (req, res, next) => {

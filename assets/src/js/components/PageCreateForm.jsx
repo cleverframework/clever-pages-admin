@@ -1,27 +1,32 @@
-import $ from 'jquery'
-import foundation from 'foundation'
 import React from 'react/addons'
 import ReactMixin from 'react-mixin'
 import { Route, RouteHandler, Link } from 'react-router'
+import PagesService from '../services/PagesService'
 
 export default class PageCreateForm extends React.Component {
 
   constructor () {
     super()
-    this.state = {}
-  }
-
-  componentDidMount () {
-    $('.addPage').foundation()
+    this.state = {
+      pageName: ''
+    }
   }
 
   create (e) {
     e.preventDefault()
-    // Pages.login(this.state.user, this.state.password)
-    //   .catch(function(err) {
-    //     alert('There\'s an error logging in')
-    //     console.error('Error logging in', err)
-    //   })
+    console.log(e)
+    const pageName = this.state.pageName
+    PagesService.create(pageName)
+      .then(() => {
+        this.setState({
+          pageName: ''
+        })
+        return true
+      })
+      .catch(function(err) {
+        alert('There\'s an error adding the page')
+        console.error('Error adding the page', err)
+      })
   }
 
   render () {
@@ -29,13 +34,16 @@ export default class PageCreateForm extends React.Component {
     return (
       <div className="row addPage">
         <div className="large-12 columns">
-        <button className="button" data-reveal-id="addPageModal">Create new page</button>
-        <div id="addPageModal" className="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-          <h2 id="modalTitle">Awesome. I have it.</h2>
-          <p className="lead">Your couch.  It is mine.</p>
-          <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-          <a className="close-reveal-modal" aria-label="Close">&#215;</a>
-        </div>
+          <form>
+            <div className="row collapse">
+              <div className="small-10 columns">
+                <input type="text" valueLink={this.linkState('pageName')} id="pageName" ref="pageName" placeholder="Page name" />
+              </div>
+              <div className="small-2 columns">
+                <button className="button postfix success" id="pageNameBtn" onClick={this.create.bind(this)}>Add</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     )

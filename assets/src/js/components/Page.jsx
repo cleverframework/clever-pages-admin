@@ -23,6 +23,7 @@ export default class Page extends React.Component {
           <div className="small-4 columns">
             <br />
             <button className="button tiny alert right">Delete</button>
+            <button className="button tiny info right">Publish</button>
           </div>
         </div>
       </div>
