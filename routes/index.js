@@ -27,17 +27,30 @@ function isLogged(req, res, next) {
 module.exports = function(PagesAdminPackage, app, config) {
 
   let db = [
-    {status: 'Published', name: 'Homepage'},
-    {status: 'Published', name: 'Page 2'},
-    {status: 'Unpublished', name: 'Page 3'},
-    {status: 'Published', name: 'Page 4'},
-    {status: 'Published', name: 'Page 5'},
-    {status: 'Maybe', name: 'Homepage 2'}
+    {status: 'Published', name: 'Homepage', medias: []},
+    {status: 'Published', name: 'Page 2', medias: []},
+    {status: 'Unpublished', name: 'Page 3', medias: []},
+    {status: 'Published', name: 'Page 4', medias: []},
+    {status: 'Published', name: 'Page 5', medias: []},
+    {status: 'Maybe', name: 'Homepage 2', medias: []}
   ]
 
   // Mock
   router.get('/data', (req, res, next) => {
     res.json(db)
+  })
+
+  router.post('/data/upload', (req, res, next) => {
+    res.json({
+      filepath: 'http://dreamatico.com/data_images/animals/animals-4.jpg'
+    })
+  })
+
+  router.get('/data/:id', (req, res, next) => {
+    if (req.params.id === 'Homepage')
+      return res.json(db[0])
+
+    res.json(db[1])
   })
 
   router.post('/data', (req, res, next) => {

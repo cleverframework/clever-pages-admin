@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher.js'
-import { LOAD_PAGES, CREATE_PAGE, SEARCH_PAGE } from '../constants/Constants.js'
+import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, UPLOAD_IMAGE, SEARCH_PAGE } from '../constants/Constants.js'
 import RouterContainer from '../services/RouterContainer'
 
 export default {
@@ -8,6 +8,13 @@ export default {
     AppDispatcher.dispatch({
       actionType: LOAD_PAGES,
       pages: pages
+    })
+  },
+
+  loadOne (page) {
+    AppDispatcher.dispatch({
+      actionType: LOAD_PAGE,
+      page: page
     })
   },
 
@@ -23,30 +30,23 @@ export default {
       actionType: CREATE_PAGE,
       page: page
     })
+  },
+
+  addMedia (type) {
+    AppDispatcher.dispatch({
+      actionType: ADD_MEDIA,
+      mediaType: type
+    })
+  },
+
+  uploadImage (file, mediaIndex) {
+    AppDispatcher.dispatch({
+      actionType: UPLOAD_IMAGE,
+      mediaIndex: mediaIndex,
+      filepath: file.filepath
+    })
   }
 
-  // loginUser (jwt) {
-  //   const savedJwt = localStorage.getItem('jwt')
-  //
-  //   AppDispatcher.dispatch({
-  //     actionType: LOGIN_USER,
-  //     jwt: jwt
-  //   })
-  //
-  //   if (savedJwt !== jwt) {
-  //     const nextPath = RouterContainer.get().getCurrentQuery().nextPath || '/'
-  //
-  //     RouterContainer.get().transitionTo(nextPath);
-  //     localStorage.setItem('jwt', jwt)
-  //   }
-  // },
-  //
-  // logoutUser () {
-  //   RouterContainer.get().transitionTo('/login');
-  //   localStorage.removeItem('jwt');
-  //   AppDispatcher.dispatch({
-  //     actionType: LOGOUT_USER
-  //   })
-  // }
+
 
 }

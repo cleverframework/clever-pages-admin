@@ -1,4 +1,4 @@
-import { LOAD_PAGES, CREATE_PAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
+import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, UPLOAD_IMAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
 import BaseStore from './BaseStore'
 
 class PagesStore extends BaseStore {
@@ -16,20 +16,75 @@ class PagesStore extends BaseStore {
 
     this._pages = parsed || []
     this._filterText = null
+    this._activePage = null
+
+    // setInterval(() => {
+    //   console.log(this._activePage)
+    // }, 1000)
   }
 
   _registerToActions (action) {
 
-    switch(action.actionType) {
+    switch (action.actionType) {
       case LOAD_PAGES:
         // LOAD PAGES
         this._pages = action.pages
         this.emitChange()
         localStorage.setItem('pages', JSON.stringify(action.pages))
         break
+      case LOAD_PAGE:
+        // EDIT PAGE
+        this._activePage = action.page
+        this.emitChange()
+        break
       case CREATE_PAGE:
         // ADD NEW PAGE
         this._pages = [action.page].concat(this._pages)
+        this.emitChange()
+        break
+      case ADD_MEDIA:
+        switch (action.mediaType) {
+          case 'IMAGE':
+            this._activePage.medias.push({
+              index: this._activePage.medias.length,
+              type: action.mediaType,
+              key: '',
+              caption: '',
+              filepath: null
+            })
+            break
+          case 'GALLERY':
+            this._activePage.medias.push({
+              index: this._activePage.medias.length,
+              type: action.mediaType,
+              key: '',
+              name: '',
+              images: []
+            })
+            break
+          case 'BUTTON':
+            this._activePage.medias.push({
+              index: this._activePage.medias.length || 0,
+              type: action.mediaType,
+              key: '',
+              text: '',
+              link: 'http://'
+            })
+          default: // TEXT
+            this._activePage.medias.push({
+              index: this._activePage.medias.length || 0,
+              type: action.mediaType,
+              key: '',
+              title: '',
+              content: ''
+            })
+        }
+        this.emitChange()
+        break
+      case UPLOAD_IMAGE:
+        // Upload an image
+        const index = action.mediaIndex
+        this._activePage.medias[index].filepath = action.filepath
         this.emitChange()
         break
       case EDIT_PAGE:
@@ -47,8 +102,17 @@ class PagesStore extends BaseStore {
     }
   }
 
+  findPageById (pageId) {
+    // TODO: make this right :-)
+    return this.pages[0]
+  }
+
   get pages () {
     return this._pages
+  }
+
+  get activePage () {
+    return this._activePage
   }
 
   get filterText () {

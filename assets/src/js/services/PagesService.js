@@ -1,4 +1,5 @@
 import request from 'reqwest'
+import superagent from 'superagent'
 import when from 'when'
 import { API_PAGES_URL } from '../constants/Constants'
 import PagesActions from '../actions/PagesActions'
@@ -14,6 +15,40 @@ class PagesService {
     }))
     .then(res => {
       PagesActions.load(res)
+      return true
+    })
+  }
+
+  loadOne (pageId) {
+    return when(request({
+      url: API_PAGES_URL + '/data/' + pageId,
+      method: 'GET',
+      crossOrigin: true,
+      type: 'json'
+    }))
+    .then(res => {
+      PagesActions.loadOne(res)
+      return true
+    })
+  }
+
+  uploadImage (files, mediaIndex) {
+    const file = files[0]
+
+    const req = superagent.post(API_PAGES_URL + '/data/upload')
+
+    files.forEach((file)=> {
+      req.attach(file.name, file)
+    })
+
+    return new Promise((yep, nope) => {
+      req.end((err, res) => {
+        if (err) return nope(err)
+        yep(res)
+      })
+    })
+    .then(res => {
+      PagesActions.uploadImage(res.body, mediaIndex)
       return true
     })
   }

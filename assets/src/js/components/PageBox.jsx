@@ -12,7 +12,6 @@ export default class PageBox extends React.Component {
   constructor () {
     super()
     const data = PagesStore.pages
-    console.log(data)
     this.state = {
       data: data,
       filterText: null
@@ -33,7 +32,7 @@ export default class PageBox extends React.Component {
     PagesStore.addChangeListener(this.changeListener)
 
     this.loadPagesFromServer()
-    setInterval(this.loadPagesFromServer, 5000)
+    // setInterval(this.loadPagesFromServer, 5000)
 
   }
 
