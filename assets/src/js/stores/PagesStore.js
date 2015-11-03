@@ -17,6 +17,7 @@ class PagesStore extends BaseStore {
     this._pages = parsed || []
     this._filterText = null
     this._activePage = null
+    this._transaction = null
 
     // setInterval(() => {
     //   console.log(this._activePage)
@@ -117,6 +118,10 @@ class PagesStore extends BaseStore {
 
   get filterText () {
     return this._filterText
+  }
+
+  get transaction () {
+    return this._transaction
   }
 
 }
