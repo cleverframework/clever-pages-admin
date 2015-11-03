@@ -1,4 +1,5 @@
-import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, UPLOAD_IMAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
+import HashMap from 'hashmap'
+import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, DELETE_MEDIA, UPLOAD_IMAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
 import BaseStore from './BaseStore'
 
 class PagesStore extends BaseStore {
@@ -36,6 +37,13 @@ class PagesStore extends BaseStore {
       case LOAD_PAGE:
         // EDIT PAGE
         this._activePage = action.page
+
+        // HashMap stores a key-value pair
+        this._activePage._medias = new HashMap()
+        this._activePage.medias.forEach(media => {
+          this._activePage._medias.set(media.unid, media)
+        })
+
         this.emitChange()
         break
       case CREATE_PAGE:
@@ -44,48 +52,70 @@ class PagesStore extends BaseStore {
         this.emitChange()
         break
       case ADD_MEDIA:
+        let mediaObj = null
         switch (action.mediaType) {
           case 'IMAGE':
-            this._activePage.medias.push({
-              index: this._activePage.medias.length,
+            mediaObj = {
+              unid: action.mediaUnid,
               type: action.mediaType,
               key: '',
               caption: '',
               filepath: null
-            })
+            }
             break
           case 'GALLERY':
-            this._activePage.medias.push({
-              index: this._activePage.medias.length,
+            mediaObj = {
+              unid: action.mediaUnid,
               type: action.mediaType,
               key: '',
               name: '',
               images: []
-            })
+            }
             break
           case 'BUTTON':
-            this._activePage.medias.push({
-              index: this._activePage.medias.length || 0,
+            mediaObj = {
+              unid: action.mediaUnid,
               type: action.mediaType,
               key: '',
               text: '',
               link: 'http://'
-            })
+            }
+            break
           default: // TEXT
-            this._activePage.medias.push({
-              index: this._activePage.medias.length || 0,
+            mediaObj = {
+              unid: action.mediaUnid,
               type: action.mediaType,
               key: '',
               title: '',
               content: ''
-            })
+            }
         }
+
+        this._activePage.medias = []
+        this._activePage._medias.set(mediaObj.unid, mediaObj)
+        this._activePage._medias.forEach(media => {
+          this._activePage.medias.push(media)
+        })
+        this.emitChange()
+        break
+      case DELETE_MEDIA:
+        // DELETE MEDIA
+        this._activePage._medias.remove(action.mediaUnid)
+        this._activePage.medias = []
+        this._activePage._medias.forEach(media => {
+          this._activePage.medias.push(media)
+        })
         this.emitChange()
         break
       case UPLOAD_IMAGE:
-        // Upload an image
-        const index = action.mediaIndex
-        this._activePage.medias[index].filepath = action.filepath
+        // UPLOAD IMAGE (FOR MEDIA)
+        const media = this._activePage._medias.get(action.mediaUnid)
+        media.filepath= action.filepath
+        this._activePage._medias.set(action.mediaUnid, media) 
+        this._activePage.medias = []
+        this._activePage._medias.forEach(media => {
+          this._activePage.medias.push(media)
+        })
         this.emitChange()
         break
       case EDIT_PAGE:

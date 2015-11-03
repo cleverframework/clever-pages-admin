@@ -14,7 +14,7 @@ export default class ImageMedia extends React.Component {
   componentWillMount () {
     this.setState({
       key: this.props.mediaKey,
-      mediaIndex: this.props.mediaIndex,
+      mediaUnid: this.props.mediaUnid,
       caption: this.props.caption,
       filepath: this.props.filepath
     })
@@ -26,7 +26,10 @@ export default class ImageMedia extends React.Component {
   }
 
   _onChange () {
-    this.setState(PagesStore.activePage.medias[this.state.mediaIndex])
+    // TODO: unmount the component ?
+    const state = PagesStore.activePage._medias.get(this.state.mediaUnid)
+    if (!state) return
+    this.setState(state)
   }
 
   componentWillUnmount () {
@@ -34,9 +37,9 @@ export default class ImageMedia extends React.Component {
   }
 
   onDrop (imageMedia, file) {
-    PagesService.uploadImage(file, imageMedia.mediaIndex)
+    PagesService.uploadImage(file, imageMedia.mediaUnid)
       .catch(err => {
-        alert('There\'s an error uploading the image')
+        alert('There\'s an error uploading the image ' + imageMedia.mediaUnid)
         console.error('Error uploading the page', err)
       })
   }
@@ -90,7 +93,7 @@ export default class ImageMedia extends React.Component {
       <div className="imageMediaArea">
         <div className="row">
           <div className="large-12 columns">
-            <label><b>Image Media</b> (<a href="#">delete</a>)</label> 
+            <label><b>Image Media</b> (<a onClick={this.props.onDelete}>delete</a>)</label>
           </div>
         </div>
         <div className="row">

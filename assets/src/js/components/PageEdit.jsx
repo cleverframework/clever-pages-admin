@@ -45,13 +45,6 @@ export default class PageEdit extends React.Component {
   }
 
   _onChange () {
-    // PagesStore.activePage.medias = []
-    // PagesStore.activePage.medias.push({
-    //   type: 'TEXT',
-    //   key: 'something',
-    //   title: 'Wahtever',
-    //   content: 'Lorem'
-    // })
     this.setState(PagesStore.activePage)
   }
 
@@ -63,10 +56,12 @@ export default class PageEdit extends React.Component {
 
   }
 
-  addMedia (type) {
-    // Debug: TO DELETE
-    console.log('Type: ' + type)
+  deleteMedia (mediaUnid) {
+    // PagesActions.deleteMedia(mediaUnid)
+    PagesActions.deleteMedia(mediaUnid)
+  }
 
+  addMedia (type) {
     PagesActions.addMedia(type)
   }
 
@@ -75,17 +70,16 @@ export default class PageEdit extends React.Component {
     // if this become to slow, use forEach instead or query server side
     const medias = this.state.medias
       .map(media => {
-        console.log(media)
         switch (media.type) {
           case 'TEXT':
             return (
-              <TextMedia key={media.index} mediaIndex={media.index} mediaKey={media.key} title={media.title}>
+              <TextMedia key={media.unid} mediaUnid={media.unid} onDelete={this.deleteMedia.bind(this, media.unid)} mediaKey={media.key} title={media.title}>
                 {media.content}
               </TextMedia>
             )
           case 'IMAGE':
             return (
-              <ImageMedia key={media.index} mediaIndex={media.index} mediaKey={media.key} caption={media.caption} filepath={media.filepath} />
+              <ImageMedia key={media.unid} mediaUnid={media.unid} onDelete={this.deleteMedia.bind(this, media.unid)} mediaKey={media.key} caption={media.caption} filepath={media.filepath} />
             )
           default:
             console.error(`${media.type} not defined.`)

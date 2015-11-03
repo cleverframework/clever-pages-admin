@@ -16,17 +16,12 @@ export default class TextMedia extends React.Component {
     })
   }
 
-  delete () {
-    // TODO: implement the delate function into PageEdit component
-    console.log('Deleting ...')
-  }
-
   render () {
     return (
       <div className="textMediaArea">
         <div className="row">
           <div className="large-12 columns">
-            <label><b>Text Media</b> (<a onClick={this.delete.bind(this)}>delete</a>)</label>
+            <label><b>Text Media</b> (<a onClick={this.props.onDelete}>delete</a>)</label>
           </div>
         </div>
         <div className="row">

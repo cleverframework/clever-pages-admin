@@ -22,6 +22,8 @@ RouterContainer.set(router)
 // TODO: use local storage to cache the list for having a 0 latency ?
 // Using pouchdb maybe ?
 
+// TODO: use hashmap instead array 
+
 router.run((Handler) => {
   React.render(<Handler />, document.getElementById('pages'))
 })
