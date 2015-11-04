@@ -1,5 +1,5 @@
 import HashMap from 'hashmap'
-import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, DELETE_MEDIA, UPLOAD_IMAGE, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
+import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, DELETE_MEDIA, UPLOAD_IMAGES, EDIT_PAGE, DELETE_PAGE, SEARCH_PAGE } from '../constants/Constants'
 import BaseStore from './BaseStore'
 
 class PagesStore extends BaseStore {
@@ -68,8 +68,8 @@ class PagesStore extends BaseStore {
               unid: action.mediaUnid,
               type: action.mediaType,
               key: '',
-              name: '',
-              images: []
+              description: '',
+              filepaths: []
             }
             break
           case 'BUTTON':
@@ -107,11 +107,23 @@ class PagesStore extends BaseStore {
         })
         this.emitChange()
         break
-      case UPLOAD_IMAGE:
-        // UPLOAD IMAGE (FOR MEDIA)
+      case UPLOAD_IMAGES:
+        // UPLOAD IMAGES (FOR MEDIAS)
+
+        const files = action.files
+
         const media = this._activePage._medias.get(action.mediaUnid)
-        media.filepath= action.filepath
-        this._activePage._medias.set(action.mediaUnid, media) 
+
+        if (media.type === 'GALLERY') {
+          const filepaths = files.map(file => {
+            return file.filepath
+          })
+          media.filepaths = filepaths.concat(media.filepaths)
+        } else {
+          // IMAGE
+          media.filepath = files[0].filepath
+        }
+        this._activePage._medias.set(action.mediaUnid, media)
         this._activePage.medias = []
         this._activePage._medias.forEach(media => {
           this._activePage.medias.push(media)

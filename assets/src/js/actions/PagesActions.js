@@ -1,6 +1,6 @@
 import shortid from 'shortid'
 import AppDispatcher from '../dispatchers/AppDispatcher.js'
-import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, DELETE_MEDIA, UPLOAD_IMAGE, SEARCH_PAGE } from '../constants/Constants.js'
+import { LOAD_PAGES, LOAD_PAGE, CREATE_PAGE, ADD_MEDIA, DELETE_MEDIA, UPLOAD_IMAGES, SEARCH_PAGE } from '../constants/Constants.js'
 import RouterContainer from '../services/RouterContainer'
 
 export default {
@@ -48,11 +48,11 @@ export default {
     })
   },
 
-  uploadImage (file, mediaUnid) {
+  uploadImages (files, mediaUnid) {
     AppDispatcher.dispatch({
-      actionType: UPLOAD_IMAGE,
+      actionType: UPLOAD_IMAGES,
       mediaUnid: mediaUnid,
-      filepath: file.filepath
+      files: files
     })
   }
 

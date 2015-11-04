@@ -32,8 +32,7 @@ class PagesService {
     })
   }
 
-  uploadImage (files, mediaIndex) {
-    const file = files[0]
+  uploadImages (files, mediaUnid) {
 
     const req = superagent.post(API_PAGES_URL + '/data/upload')
 
@@ -48,7 +47,7 @@ class PagesService {
       })
     })
     .then(res => {
-      PagesActions.uploadImage(res.body, mediaIndex)
+      PagesActions.uploadImages(res.body, mediaUnid)
       return true
     })
   }

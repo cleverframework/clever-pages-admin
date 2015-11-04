@@ -9,6 +9,7 @@ import PagesActions from '../actions/PagesActions'
 import AddMediaForm from './AddMediaForm'
 import TextMedia from './TextMedia'
 import ImageMedia from './ImageMedia'
+import GalleryMedia from './GalleryMedia'
 
 export default class PageEdit extends React.Component {
 
@@ -80,6 +81,10 @@ export default class PageEdit extends React.Component {
           case 'IMAGE':
             return (
               <ImageMedia key={media.unid} mediaUnid={media.unid} onDelete={this.deleteMedia.bind(this, media.unid)} mediaKey={media.key} caption={media.caption} filepath={media.filepath} />
+            )
+          case 'GALLERY':
+            return (
+              <GalleryMedia key={media.unid} mediaUnid={media.unid} onDelete={this.deleteMedia.bind(this, media.unid)} mediaKey={media.key} description={media.caption} filepaths={media.filepaths} />
             )
           default:
             console.error(`${media.type} not defined.`)

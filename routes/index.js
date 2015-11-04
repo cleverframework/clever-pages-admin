@@ -40,10 +40,17 @@ module.exports = function(PagesAdminPackage, app, config) {
     res.json(db)
   })
 
+  //<imf src={this.props.item} style={{height: '200px'}} />
+
   router.post('/data/upload', (req, res, next) => {
-    res.json({
+    res.json([{
       filepath: 'http://dreamatico.com/data_images/animals/animals-4.jpg'
-    })
+    }, {
+      filepath: 'http://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg'
+    },
+    {
+      filepath: 'https://www.ucl.ac.uk/news/news-articles/1213/muscle-fibres-heart.jpg'
+    }])
   })
 
   router.get('/data/:id', (req, res, next) => {

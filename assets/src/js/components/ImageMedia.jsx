@@ -37,9 +37,9 @@ export default class ImageMedia extends React.Component {
   }
 
   onDrop (imageMedia, file) {
-    PagesService.uploadImage(file, imageMedia.mediaUnid)
+    PagesService.uploadImages(file, imageMedia.mediaUnid)
       .catch(err => {
-        alert('There\'s an error uploading the image ' + imageMedia.mediaUnid)
+        alert('There\'s an error uploading the image')
         console.error('Error uploading the page', err)
       })
   }
@@ -103,7 +103,7 @@ export default class ImageMedia extends React.Component {
         </div>
         <div className="row">
           <div className="large-12 columns">
-            <input type="text" valueLink={this.linkState('caption')} id="title" ref="title" placeholder="Caption" />
+            <input type="text" valueLink={this.linkState('caption')} id="caption" ref="caption" placeholder="Caption" />
           </div>
         </div>
         <div className="row">
