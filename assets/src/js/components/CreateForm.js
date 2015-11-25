@@ -30,16 +30,27 @@ export default class CreateForm extends Component {
   renderForm () {
     const { disabled } = this.props
     return (
-      <form onSubmit={this.onSubmit.bind(this)}>
-        <input
-          value={this.state.inputNameValue}
-          onChange={this.handleChange.bind(this)}
-          placeholder={'What\'s the name of your next page?'}
-          type='text'
-          ref='name'
-          disabled={disabled} />
-        <button disabled={disabled} type='submit'>Save</button>
-      </form>
+      <div className='row'>
+        <form role='form' onSubmit={this.onSubmit.bind(this)}>
+
+          <div className='input-group'>
+            <input
+              type='text'
+              ref='name'
+              className='form-control input-xl'
+              value={this.state.inputNameValue}
+              onChange={this.handleChange.bind(this)}
+              placeholder={'What\'s the name of your next page?'}
+              disabled={disabled} />
+            <span className='input-group-btn'>
+              <button
+                className='btn btn-default'
+                disabled={disabled}
+                type='submit'>Save</button>
+            </span>
+          </div>
+        </form>
+      </div>
     )
   }
 

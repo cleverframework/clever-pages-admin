@@ -2,16 +2,26 @@ import React, { Component, PropTypes } from 'react'
 
 export default class TextSearchFilter extends Component {
 
+  onChange (e) {
+    const { onFilterChange } = this.props
+    e.preventDefault()
+    onFilterChange(e.target.value)
+  }
+
   render () {
-    const { filter, onFilterChange } = this.props
+    const { filter } = this.props
     return (
-      <p>
-        Search:&nbsp;
-        <input value={filter} type='text' placeholder='Type something ...' onChange={e => {
-          e.preventDefault()
-          onFilterChange(e.target.value)
-        }} />
-      </p>
+      <div className='form-group'>
+        <label
+          className='filter-col'
+          style={{marginRight: '0px'}}>Search:</label>
+        <input
+          value={filter}
+          type='text'
+          className='form-control'
+          placeholder='Type something ...'
+          onChange={this.onChange.bind(this)} />
+      </div>
     )
   }
 

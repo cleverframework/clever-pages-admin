@@ -3,32 +3,29 @@ import { SHOW_ALL, SHOW_PUBLISHED, SHOW_UNPUBLISHED } from '../constants/PageFil
 
 export default class PublishStatusFilter extends Component {
   renderFilter (filter, name) {
-    if (filter === this.props.filter) {
-      return name
-    }
-
     return (
-      <a href='#' onClick={e => {
-        e.preventDefault()
-        this.props.onFilterChange(filter)
-      }}>
-        {name}
-      </a>
+      <option value={filter}>{name}</option>
     )
+  }
+
+  onChange (e) {
+    const { onFilterChange } = this.props
+    e.preventDefault()
+    onFilterChange(e.target.value)
   }
 
   render () {
     return (
-      <p>
-        Show:
-        {' '}
-        {this.renderFilter(SHOW_ALL, 'All')}
-        {', '}
-        {this.renderFilter(SHOW_PUBLISHED, 'Published')}
-        {', '}
-        {this.renderFilter(SHOW_UNPUBLISHED, 'Unpublished')}
-        .
-      </p>
+      <div className='form-group'>
+        <label className='filter-col' style={{marginRight: '0px'}}>Show:</label>
+        <select
+          className='form-control'
+          onChange={this.onChange.bind(this)}>
+            {this.renderFilter(SHOW_ALL, 'All')}
+            {this.renderFilter(SHOW_PUBLISHED, 'Published')}
+            {this.renderFilter(SHOW_UNPUBLISHED, 'Unpublished')}
+        </select>
+      </div>
     )
   }
 }

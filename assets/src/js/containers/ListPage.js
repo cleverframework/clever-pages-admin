@@ -43,19 +43,30 @@ class ListPage extends Component {
     } = this.props
 
     return (
-      <div>
+      <section id='ListPage'>
+        <div className='row'>
+          <div id='filter-panel' className='filter-panel'>
+            <div className='panel panel-default'>
+              <div className='panel-body'>
+                <form className='form-inline' role='form'>
 
-        <PublishStatusFilter
-          filter={publishStatusFilter}
-          onFilterChange={nextFilter =>
-            dispatch(setPublishStatusFilter(nextFilter))
-          } />
+                  <PublishStatusFilter
+                    filter={publishStatusFilter}
+                    onFilterChange={nextFilter =>
+                      dispatch(setPublishStatusFilter(nextFilter))
+                    } />
 
-        <TextSearchFilter
-          filter={textSearchFilter}
-          onFilterChange={nextFilter =>
-            dispatch(setTextSearchFilter(nextFilter))
-          } />
+                  <TextSearchFilter
+                    filter={textSearchFilter}
+                    onFilterChange={nextFilter =>
+                      dispatch(setTextSearchFilter(nextFilter))
+                    } />
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {isFetching && filteredPages.length === 0 &&
           <h2>Loading...</h2>
@@ -73,14 +84,14 @@ class ListPage extends Component {
               onDelete={this.onDelete.bind(this)} />
           </div>
         }
-
+        <br />
         <CreateForm
           inputNameValue={createFormInputNameValue}
           disabled={isCreating}
           onCreateClick={name =>
             dispatch(createPage(name))
           } />
-      </div>
+      </section>
     )
   }
 }

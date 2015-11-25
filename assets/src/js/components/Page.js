@@ -18,7 +18,7 @@ export default class Pages extends Component {
 
     return (
       <li>
-        <Link to={`/${id}`}>{name}</Link>
+        <Link to={`/pages/${id}`}>{name}</Link>
         (
           <a href='#'
             onClick={this.togglePublish.bind(this)}>
