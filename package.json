@@ -36,6 +36,7 @@
     "jwt-decode": "^1.4.0",
     "nativesortable": "0.0.1",
     "react": "^0.14.2",
+    "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.0",
     "react-mixin": "^2.0.2",
     "react-redux": "^4.0.0",

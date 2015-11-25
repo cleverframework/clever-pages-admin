@@ -69,13 +69,23 @@ class ListPage extends Component {
         </div>
 
         {isFetching && filteredPages.length === 0 &&
-          <h2>Loading...</h2>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <h2>Loading...</h2>
+              <br />
+            </div>
+          </div>
         }
         {!isFetching && filteredPages.length === 0 &&
-          <h2>Empty.</h2>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <h2>Empty.</h2>
+              <br />
+            </div>
+          </div>
         }
         {filteredPages.length > 0 &&
-          <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+          <div className='row' style={{ opacity: isFetching ? 0.5 : 1 }}>
             <Pages
               pages={filteredPages}
               isDeleting={isDeleting}
@@ -84,7 +94,7 @@ class ListPage extends Component {
               onDelete={this.onDelete.bind(this)} />
           </div>
         }
-        <br />
+
         <CreateForm
           inputNameValue={createFormInputNameValue}
           disabled={isCreating}

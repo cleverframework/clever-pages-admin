@@ -19,9 +19,9 @@ export default class Pages extends Component {
         />
     )
     return (
-      <ul>
+      <div>
         {pages}
-      </ul>
+      </div>
     )
   }
 }
