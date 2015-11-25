@@ -15,18 +15,31 @@ export default class CreateMediaForm extends Component {
 
   renderForm () {
     return (
-      <form>
-        <b>Add: </b>
-        <button
-          onClick={this.onCreate.bind(this, MediaTypes.TEXT)}
-          type='button'>Text</button>
-        <button
-          onClick={this.onCreate.bind(this, MediaTypes.IMAGE)}
-          type='button'>Image</button>
-        <button
-          onClick={this.onCreate.bind(this, MediaTypes.GALLERY)}
-          type='button'>Gallery</button>
-      </form>
+      <div className='row'>
+        <div className='row'>
+          <div className='panel panel-default'>
+            <div className='panel-heading'>
+              <h4 className='panel-title'>Add Media</h4>
+            </div>
+            <div className='panel-body'>
+              <div className='btn-group' role='group'>
+                <button
+                  className='btn btn-default'
+                  onClick={this.onCreate.bind(this, MediaTypes.TEXT)}
+                  type='button'>Text</button>
+                <button
+                  className='btn btn-default'
+                  onClick={this.onCreate.bind(this, MediaTypes.IMAGE)}
+                  type='button'>Image</button>
+                <button
+                  className='btn btn-default'
+                  onClick={this.onCreate.bind(this, MediaTypes.GALLERY)}
+                  type='button'>Gallery</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 

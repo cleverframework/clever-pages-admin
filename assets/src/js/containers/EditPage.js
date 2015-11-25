@@ -78,7 +78,7 @@ class EditPage extends Component {
     } = this.props
 
     return (
-      <div>
+      <div className='row'>
 
         {isFetchingPage &&
           <div className='row'>
