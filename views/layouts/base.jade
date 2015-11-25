@@ -1,11 +1,17 @@
 doctype html
-html
+html(lang='en')
   head
     block meta
       meta(charset='utf-8')
-      meta(name='viewport' content='initial-scale=1.0, maximum-scale=1.0')
+      meta(http-equiv='X-UA-Compatible', content='IE=edge')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      meta(name='description', content='')
+      meta(name='author', content='')
       
     block appendmeta
+    
+    block favicon
+      link(rel='icon', href='')
     
     block title
       title Clever V1
@@ -16,51 +22,44 @@ html
     block appendcss
     
   body
-    nav.top-bar(data-topbar='')
-      ul.title-area
-        li.name
-          h1
-            a(href='/')
-              | Clever V1
-        li.toggle-topbar.menu-icon
-          a(href='#')
-            span Menu
-      section.top-bar-section
-        ul.left
-          li.divider
-          li
-            a(href='/pages') Pages
-          li.divider
-          li
-            a(href='/users') Users
-          li.divider
-        ul.right
-          li.divider
-          li.has-dropdown
-            a(href='#') #{user.firstname || 'Guest'} #{user.lastname || 'User'}
-            ul.dropdown
-              li
-                a(href='/auth#/logout') Logout
-              
-    block content
-    
-    footer.row
-      .large-12.columns
-        hr
-        .row
-          .large-6.columns
-            p &copy; Copyright no one at all. Go to town.
-          .large-6.columns
-            ul.inline-list.right
-              li
-                a(href='#') Documentation
-              li
-                a(href='#') GitHub
-    
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/') Clever V1
+        #navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/') Home
+            li.active
+              a(href='/pages') Pages
+            li
+              a(href='/articles') Articles
+          ul.nav.navbar-nav.navbar-right
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                | #{user.firstname || user.email} #{user.lastname || ''}&nbsp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href='#') Account
+                li
+                  a(href='#') Settings
+                li.divider(role='separator')
+                li
+                  a(href='/logout') Logout
+
+    .container
+      .pages-template
+        block content
+  
     block prejs
     
     block js
       script(type='text/javascript', src='public/pages-admin/index.js')
     
     block appendjs
-    

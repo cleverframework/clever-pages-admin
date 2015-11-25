@@ -7,18 +7,16 @@
   "scripts": {
     "build": "npm run build-js && npm run build-css",
     "watch": "npm run watch-js && npm run watch-css",
-    "build-js": "browserify --extension=.jsx --extension=.js assets/src/js/app.jsx | uglifyjs > assets/dist/index.js",
-    "watch-js": "watchify --extension=.jsx --extension=.js assets/src/js/app.jsx -o assets/dist/index.js --debug --verbose",
+    "build-js": "browserify assets/src/js/index.js | uglifyjs > assets/dist/index.js",
+    "watch-js": "watchify assets/src/js/index.js -o assets/dist/index.js --debug --verbose",
     "watch-css": "sourdough -w -v assets/src/styl/index.styl assets/dist/index.css",
     "build-css": "sourdough -c assets/src/styl/index.styl assets/dist/index.css"
   },
   "browser": {
-    "jquery": "./node_modules/jquery/dist/jquery.js",
-    "foundation": "./node_modules/foundation-sites/js/foundation.js"
+    "jquery": "./node_modules/jquery/dist/jquery.js"
   },
   "browserify-shim": {
-    "jquery": "$",
-    "foundation": "foundation"
+    "jquery": "$"
   },
   "browserify": {
     "transform": [
@@ -27,23 +25,26 @@
     ]
   },
   "dependencies": {
-    "flux": "^2.0.1",
-    "foundation-sites": "^5.5.3",
-    "hashmap": "^2.0.4",
+    "attr-accept": "^1.0.3",
+    "babel-polyfill": "^6.2.0",
+    "bootstrap": "^3.3.6",
+    "bubble-sort-js": "0.0.2",
+    "history": "^1.13.0",
+    "isomorphic-fetch": "^2.1.1",
     "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
     "jwt-decode": "^1.4.0",
-    "react": "^0.13",
-    "react-anything-sortable": "^0.3.2",
-    "react-dropzone": "^2.2.4",
-    "react-mixin": "^1.1.0",
-    "react-redirect": "^1.0.0",
-    "react-router": "^0.13.2",
-    "react-sortable-mixin": "0.0.1",
-    "request": "^2.65.0",
-    "reqwest": "^1.1.5",
-    "shortid": "^2.2.4",
-    "superagent": "^1.4.0",
-    "when": "^3.7.2"
+    "nativesortable": "0.0.1",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.0",
+    "react-mixin": "^2.0.2",
+    "react-redux": "^4.0.0",
+    "react-router": "^1.0.0",
+    "react-sortable": "0.0.2",
+    "redux": "^3.0.0",
+    "redux-logger": "^2.0.2",
+    "redux-router": "^1.0.0-beta3",
+    "redux-thunk": "^0.1.0"
   },
   "devDependencies": {
     "babelify": "^6.1.0",
