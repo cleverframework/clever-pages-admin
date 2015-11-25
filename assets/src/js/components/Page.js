@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react'
 import { Link } from 'react-router'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import {
+  DropdownButton, MenuItem,
+  Tooltip, OverlayTrigger
+} from 'react-bootstrap'
 
 export default class Pages extends Component {
 
@@ -11,11 +14,15 @@ export default class Pages extends Component {
 
   delete () {
     const { id, onDelete } = this.props
-    onDelete(id)
+    if (confirm('Are you sure?')) onDelete(id)
   }
 
   render () {
     const { id, name, published, deletingPageId } = this.props
+
+    const tooltip = (
+      <Tooltip id={`tooltip-${id}`}>{published ? 'Publish' : 'Unpublish'}</Tooltip>
+    )
 
     return (
       <div className='filter-panel'>
@@ -23,19 +30,23 @@ export default class Pages extends Component {
           <div className='panel-body'>
             <Link to={`/pages/${id}`}>{name}</Link>&nbsp;
             {published &&
-              <span style={{color: 'green'}} className=''>
-                <img
-                  src='http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png'
-                  width='10'
-                  height='10' />
-              </span>}
+              <OverlayTrigger placement="top" overlay={tooltip}>
+                <span style={{color: 'green'}} className=''>
+                  <img
+                    src='http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png'
+                    width='10'
+                    height='10' />
+                </span>
+              </OverlayTrigger>}
             {!published &&
-              <span style={{color: 'red'}} className=''>
-                <img
-                  src='https://pixabay.com/static/uploads/photo/2012/05/07/02/46/red-47690_640.png'
-                  width='10'
-                  height='10' />
-              </span>}
+              <OverlayTrigger placement="top" overlay={tooltip}>
+                <span style={{color: 'red'}} className=''>
+                  <img
+                    src='https://pixabay.com/static/uploads/photo/2012/05/07/02/46/red-47690_640.png'
+                    width='10'
+                    height='10' />
+                </span>
+              </OverlayTrigger>}
             <div className='pull-right'>
               {deletingPageId !== id &&
                 <DropdownButton bsStyle={'default'} title={'Quick Actions'} id={`dropdown-basic-${id}`}>

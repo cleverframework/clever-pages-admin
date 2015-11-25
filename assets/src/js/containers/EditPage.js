@@ -81,7 +81,11 @@ class EditPage extends Component {
       <div>
 
         {isFetchingPage &&
-          <h2>Loading...</h2>
+          <div className='row'>
+            <div className='col-sm-12'>
+              <h2>Loading...</h2>
+            </div>
+          </div>
         }
 
         {!isFetchingPage &&
