@@ -63,6 +63,10 @@ export default class GalleryMedia extends Media {
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
     const title = `${this.type} [${ref}]`
 
+    const tooltip = (
+      <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
+    )
+
     return (
       <div className='row'>
         <div className='panel panel-default'>
@@ -75,7 +79,7 @@ export default class GalleryMedia extends Media {
                 <a
                   href='#'
                   className='pull-right'
-                  style={{textDecoration: 'none'}}
+                  style={{textDecoration: 'none', color: 'red'}}
                   onClick={this.delete.bind(this)}>
                   <OverlayTrigger placement='top' overlay={tooltip}>
                     <FontAwesome name='times' />

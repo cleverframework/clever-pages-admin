@@ -43,11 +43,15 @@ export default class ButtonMedia extends Media {
 
   render () {
     const {
-      reference, caption, file
+      id, reference, caption, file
     } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
     const title = `${this.type} [${ref}]`
+
+    const tooltip = (
+      <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
+    )
 
     return (
       <div className='row'>
@@ -61,7 +65,7 @@ export default class ButtonMedia extends Media {
                 <a
                   href='#'
                   className='pull-right'
-                  style={{textDecoration: 'none'}}
+                  style={{textDecoration: 'none', color: 'red'}}
                   onClick={this.delete.bind(this)}>
                   <OverlayTrigger placement='top' overlay={tooltip}>
                     <FontAwesome name='times' />
