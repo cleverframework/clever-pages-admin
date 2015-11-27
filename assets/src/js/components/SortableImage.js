@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import FontAwesome from 'react-fontawesome'
-import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 export default class SortableImageList extends Component {
   constructor (props) {
