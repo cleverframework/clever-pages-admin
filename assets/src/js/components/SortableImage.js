@@ -24,34 +24,21 @@ export default class SortableImageList extends Component {
   render () {
     const { filename, caption } = this.props
 
-    const styleListElement = {
-      backgroundImage: `url(/files/${filename})`,
-      width: '100%',
-      height: '64px',
-      display: 'block',
-      backgroundSize: '64px 64px',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'left top'
-    }
-
-    const styleInput = {
-      margin: '20px',
-      marginLeft: '90px'
-    }
-
     return (
       <li id={this.props.id}
         className='ui-state-default'
-        style={styleListElement}>
+        style={{backgroundImage: `url(/files/${filename})`}}>
         <input
           defaultValue={caption}
           type='text'
           ref='caption'
           placeholder='Caption'
-          onBlur={this.update.bind(this)}
-          style={styleInput} />
+          className='form-control gallery-image-input-caption'
+          onBlur={this.update.bind(this)} />
         <button
+          className='btn btn-default'
           onClick={this.delete.bind(this)}
+          style={{marginTop: '-3.5px'}}
           type='button'>Delete</button>
       </li>
     )

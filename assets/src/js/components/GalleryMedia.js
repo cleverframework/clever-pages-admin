@@ -8,8 +8,11 @@ export default class GalleryMedia extends Media {
 
   constructor (props) {
     super(props)
-    // TODO: enable multiupload
-    this.multiple = false
+    this.state = {
+      reference: props.reference
+    }
+    this.type = 'Gallery'
+    this.multiple = true // TODO: verify multiupload works fine
     this.accept = '.jpg,.jpeg,.png,.gif'
   }
 
@@ -40,45 +43,80 @@ export default class GalleryMedia extends Media {
     onDeleteImage(id, fileId)
   }
 
+  onReferenceChange (e) {
+    e.preventDefault()
+    this.setState({
+      reference: this.refs.reference.value
+    })
+  }
+
   render () {
     const {
       id, reference, name, imageFiles,
       onSort
     } = this.props
 
+    const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
+    const title = `${this.type} [${ref}]`
+
     return (
-      <div>
-        <br />
-        <b>Gallery Media</b> (<a href='#' onClick={this.delete.bind(this)}>Delete</a>)
-        <br />
-        <form>
-          Reference: <input
-            type='text'
-            defaultValue={reference}
-            ref='reference'
-            onBlur={this.update.bind(this)} />
-          <br />
-          Name: <input
-            type='text'
-            defaultValue={name}
-            ref='name'
-            onBlur={this.update.bind(this)} />
-          <br />
-          {imageFiles.length > 0 &&
-            <SortableImageList
-              key={Math.random()}
-              mediaId={id}
-              images={imageFiles}
-              onSort={onSort}
-              onUpdateImage={this.updateImage.bind(this)}
-              onDeleteImage={this.deleteImage.bind(this)} />}
-          {imageFiles.length > 0 &&
-            <br />}
-          <Uploader
-            multiple={this.multiple}
-            accept={this.accept}
-            onUpload={this.uploadImage.bind(this)} />
-        </form>
+      <div className='row'>
+        <div className='panel panel-default'>
+          <div className='panel-heading'>
+            <div className='row'>
+              <div className='col-xs-8'>
+                <h4 className='panel-title'>{title}</h4>
+              </div>
+              <div className='col-xs-4'>
+                <a
+                  href='#'
+                  className='pull-right'
+                  style={{textDecoration: 'none'}}
+                  onClick={this.delete.bind(this)}>Delete</a>
+              </div>
+            </div>
+          </div>
+          <div className='panel-body'>
+            <form role='form'>
+              <div className='form-group'>
+                <label>Reference</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  defaultValue={reference}
+                  ref='reference'
+                  onChange={this.onReferenceChange.bind(this)}
+                  onBlur={this.update.bind(this)} />
+              </div>
+              <div className='form-group'>
+                <label>Name</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  defaultValue={name}
+                  ref='name'
+                  onBlur={this.update.bind(this)} />
+              </div>
+              <div className='form-group'>
+                <label>Images</label>
+                {imageFiles.length > 0 &&
+                  <SortableImageList
+                    key={Math.random()}
+                    mediaId={id}
+                    images={imageFiles}
+                    onSort={onSort}
+                    onUpdateImage={this.updateImage.bind(this)}
+                    onDeleteImage={this.deleteImage.bind(this)} />}
+                {imageFiles.length > 0 &&
+                  <br />}
+                <Uploader
+                  multiple={this.multiple}
+                  accept={this.accept}
+                  onUpload={this.uploadImage.bind(this)} />
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     )
   }
