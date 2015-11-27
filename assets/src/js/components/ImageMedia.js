@@ -1,4 +1,8 @@
+'use strict'
+
 import React, { PropTypes } from 'react'
+import FontAwesome from 'react-fontawesome'
+import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import Media from './Media'
 import Uploader from './Uploader'
 
@@ -39,11 +43,15 @@ export default class ImageMedia extends Media {
 
   render () {
     const {
-      reference, caption, imageFile
+      id, reference, caption, imageFile
     } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
     const title = `${this.type} [${ref}]`
+
+    const tooltip = (
+      <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
+    )
 
     return (
       <div className='row'>
@@ -57,8 +65,12 @@ export default class ImageMedia extends Media {
                 <a
                   href='#'
                   className='pull-right'
-                  style={{textDecoration: 'none'}}
-                  onClick={this.delete.bind(this)}>Delete</a>
+                  style={{textDecoration: 'none', color: 'red'}}
+                  onClick={this.delete.bind(this)}>
+                  <OverlayTrigger placement='top' overlay={tooltip}>
+                    <FontAwesome name='times' />
+                  </OverlayTrigger>
+                </a>
               </div>
             </div>
           </div>

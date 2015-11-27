@@ -1,9 +1,11 @@
+'use strict'
+
 import { PropTypes, Component } from 'react'
 
 export default class Media extends Component {
   delete () {
     const { id, onDelete } = this.props
-    onDelete(id)
+    if (confirm('Are you sure?')) onDelete(id)
   }
 }
 

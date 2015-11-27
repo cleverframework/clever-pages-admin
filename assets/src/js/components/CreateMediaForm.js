@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component, PropTypes } from 'react'
 import * as MediaTypes from '../constants/MediaTypes'
 
@@ -35,6 +37,10 @@ export default class CreateMediaForm extends Component {
                   className='btn btn-default'
                   onClick={this.onCreate.bind(this, MediaTypes.GALLERY)}
                   type='button'>Gallery</button>
+                <button
+                  className='btn btn-default'
+                  onClick={this.onCreate.bind(this, MediaTypes.BUTTON)}
+                  type='button'>Button</button>
               </div>
             </div>
           </div>

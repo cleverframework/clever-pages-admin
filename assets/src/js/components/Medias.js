@@ -1,8 +1,11 @@
+'use strict'
+
 import React, { PropTypes, Component } from 'react'
 import * as MediaTypes from '../constants/MediaTypes'
 import TextMedia from './TextMedia'
 import ImageMedia from './ImageMedia'
 import GalleryMedia from './GalleryMedia'
+import ButtonMedia from './ButtonMedia'
 
 export default class Medias extends Component {
 
@@ -66,6 +69,19 @@ export default class Medias extends Component {
               onUpdateImage={onUpdateFileMedia}
               onDeleteImage={onDeleteFileMedia}
               onSort={onSortGalleryMedia} />
+          )
+        case MediaTypes.BUTTON:
+          counter.button++
+          return (
+            <ButtonMedia key={i}
+              id={media.id}
+              vid={counter.button}
+              reference={media.reference}
+              caption={media.caption}
+              file={media.file}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              onUploadFile={onUploadFileMedia} />
           )
         default:
           // BOOM! WDF :)

@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { PropTypes, Component } from 'react'
 
 export default class Uploader extends Component {

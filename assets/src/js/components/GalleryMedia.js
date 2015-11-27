@@ -1,4 +1,8 @@
+'use strict'
+
 import React, { PropTypes } from 'react'
+import FontAwesome from 'react-fontawesome'
+import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import Media from './Media'
 import SortableImageList from './SortableImageList'
 import Uploader from './Uploader'
@@ -72,7 +76,11 @@ export default class GalleryMedia extends Media {
                   href='#'
                   className='pull-right'
                   style={{textDecoration: 'none'}}
-                  onClick={this.delete.bind(this)}>Delete</a>
+                  onClick={this.delete.bind(this)}>
+                  <OverlayTrigger placement='top' overlay={tooltip}>
+                    <FontAwesome name='times' />
+                  </OverlayTrigger>
+                </a>
               </div>
             </div>
           </div>

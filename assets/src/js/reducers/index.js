@@ -1,3 +1,5 @@
+'use strict'
+
 import { combineReducers } from 'redux'
 import { routerStateReducer as router } from 'redux-router'
 import publishStatusFilter from './publish-status-filter'

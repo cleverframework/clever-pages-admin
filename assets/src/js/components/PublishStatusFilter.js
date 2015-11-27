@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component, PropTypes } from 'react'
 import { SHOW_ALL, SHOW_PUBLISHED, SHOW_UNPUBLISHED } from '../constants/PageFilters'
 

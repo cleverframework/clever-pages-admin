@@ -1,3 +1,5 @@
+'use strict'
+
 import * as publishStatusFilter from './publish-status-filter'
 import * as textSearchFilter from './text-search-filter'
 import * as pages from './pages'

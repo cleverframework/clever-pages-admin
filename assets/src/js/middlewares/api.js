@@ -1,3 +1,5 @@
+'use strict'
+
 import fetch from 'isomorphic-fetch'
 
 export class Request {

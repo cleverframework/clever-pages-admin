@@ -1,3 +1,5 @@
+'use strict'
+
 import { createStore, applyMiddleware, compose } from 'redux'
 import { reduxReactRouter } from 'redux-router'
 import thunk from 'redux-thunk'

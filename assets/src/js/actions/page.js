@@ -1,3 +1,5 @@
+'use strict'
+
 import { Request } from '../middlewares/api'
 import * as types from '../constants/ActionTypes'
 import { PAGES_URL } from '../constants/URLs'

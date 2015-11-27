@@ -1,3 +1,5 @@
+'use strict'
+
 import * as types from '../constants/ActionTypes'
 import { SHOW_ALL } from '../constants/PageFilters'
 

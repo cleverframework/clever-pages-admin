@@ -7,10 +7,11 @@
   "scripts": {
     "build": "npm run build-js && npm run build-css",
     "watch": "npm run watch-js && npm run watch-css",
-    "build-js": "browserify assets/src/js/index.js | uglifyjs > assets/dist/index.js",
-    "watch-js": "watchify assets/src/js/index.js -o assets/dist/index.js --debug --verbose",
-    "watch-css": "sourdough -w -v assets/src/styl/index.styl assets/dist/index.css",
-    "build-css": "sourdough -c assets/src/styl/index.styl assets/dist/index.css"
+    "build-js": "mkdir -p assets/dist/js && browserify assets/src/js/index.js | uglifyjs > assets/dist/js/index.js",
+    "watch-js": "mkdir -p assets/dist/js && watchify assets/src/js/index.js -o assets/dist/js/index.js --debug --verbose",
+    "watch-css": "mkdir -p assets/dist/css && sourdough -w -v assets/src/styl/index.styl assets/dist/css/index.css",
+    "build-css": "mkdir -p assets/dist/css && sourdough -c assets/src/styl/index.styl assets/dist/css/index.css",
+    "copy-fonts": "cp -rf assets/src/fonts assets/dist/fonts"
   },
   "browser": {
     "jquery": "./node_modules/jquery/dist/jquery.js"
@@ -29,6 +30,7 @@
     "babel-polyfill": "^6.2.0",
     "bootstrap": "^3.3.6",
     "bubble-sort-js": "0.0.2",
+    "font-awesome": "^4.4.0",
     "history": "^1.13.0",
     "isomorphic-fetch": "^2.1.1",
     "jquery": "^2.1.4",
@@ -38,6 +40,7 @@
     "react": "^0.14.2",
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.0",
+    "react-fontawesome": "^0.3.3",
     "react-mixin": "^2.0.2",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",

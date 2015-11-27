@@ -4,26 +4,34 @@ import React, { PropTypes } from 'react'
 import FontAwesome from 'react-fontawesome'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import Media from './Media'
+import Uploader from './Uploader'
 
 // Extends Media class
-export default class TextMedia extends Media {
+export default class ButtonMedia extends Media {
 
   constructor (props) {
     super(props)
     this.state = {
       reference: props.reference
     }
-    this.type = 'Text'
+    this.type = 'Button'
+    this.multiple = false
+    this.accept = '.pdf,.zip,.rar'
   }
 
-  onBlur (e) {
+  update (e) {
     const { id, onUpdate } = this.props
     e.preventDefault()
     onUpdate(id, {
       reference: this.refs.reference.value,
-      name: this.refs.name.value,
-      content: this.refs.content.value
+      caption: this.refs.caption.value
     })
+  }
+
+  uploadFile (files) {
+    const { id, onUploadFile } = this.props
+    if (files.length > 0) onUploadFile(id, files[0])
+    else console.error('Files[] is empty... and this is wrong.')
   }
 
   onReferenceChange (e) {
@@ -35,7 +43,7 @@ export default class TextMedia extends Media {
 
   render () {
     const {
-      reference, name, content
+      reference, caption, file
     } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
@@ -72,25 +80,38 @@ export default class TextMedia extends Media {
                   defaultValue={reference}
                   ref='reference'
                   onChange={this.onReferenceChange.bind(this)}
-                  onBlur={this.onBlur.bind(this)} />
+                  onBlur={this.update.bind(this)} />
               </div>
               <div className='form-group'>
-                <label>Name</label>
+                <label>Caption</label>
                 <input
                   type='text'
                   className='form-control'
-                  defaultValue={name}
-                  ref='name'
-                  onBlur={this.onBlur.bind(this)} />
+                  defaultValue={caption}
+                  ref='caption'
+                  onBlur={this.update.bind(this)} />
               </div>
               <div className='form-group'>
-                <label>Content</label>
-                <textarea
-                  type='text'
-                  className='form-control'
-                  defaultValue={content}
-                  ref='content'
-                  onBlur={this.onBlur.bind(this)} />
+                <label>File</label>
+                {file &&
+                  <div className='row'>
+                    <div className='col-xs-12'>
+                      <a
+                        target='_new'
+                        href='{`/files/${file.filename}`}'
+                        style={{marginBottom: '10px', display: 'block'}}>
+                        {file.filename}
+                      </a>
+                    </div>
+                  </div>}
+                <div className='row'>
+                  <div className='col-xs-12'>
+                    <Uploader
+                      multiple={this.multiple}
+                      accept={this.accept}
+                      onUpload={this.uploadFile.bind(this)} />
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -100,8 +121,9 @@ export default class TextMedia extends Media {
   }
 }
 
-TextMedia.propTypes = Object.assign({}, Media.propTypes, {
-  name: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired
+ButtonMedia.propTypes = Object.assign({}, Media.propTypes, {
+  caption: PropTypes.string.isRequired,
+  file: PropTypes.object,
+  onUpdate: PropTypes.func.isRequired,
+  onUploadFile: PropTypes.func.isRequired
 })

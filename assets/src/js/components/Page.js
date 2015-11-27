@@ -1,5 +1,8 @@
+'use strict'
+
 import React, { PropTypes, Component } from 'react'
 import { Link } from 'react-router'
+import FontAwesome from 'react-fontawesome'
 import {
   DropdownButton, MenuItem,
   Tooltip, OverlayTrigger
@@ -30,22 +33,16 @@ export default class Pages extends Component {
           <div className='panel-body'>
             <Link to={`/pages/${id}`}>{name}</Link>&nbsp;
             {published &&
-              <OverlayTrigger placement="top" overlay={tooltip}>
-                <span style={{color: 'green'}} className=''>
-                  <img
-                    src='http://www.clker.com/cliparts/u/g/F/R/X/9/green-circle-hi.png'
-                    width='10'
-                    height='10' />
-                </span>
+              <OverlayTrigger placement='top' overlay={tooltip}>
+                <FontAwesome
+                  style={{color: 'green'}}
+                  name='circle' />
               </OverlayTrigger>}
             {!published &&
-              <OverlayTrigger placement="top" overlay={tooltip}>
-                <span style={{color: 'red'}} className=''>
-                  <img
-                    src='https://pixabay.com/static/uploads/photo/2012/05/07/02/46/red-47690_640.png'
-                    width='10'
-                    height='10' />
-                </span>
+              <OverlayTrigger placement='top' overlay={tooltip}>
+                <FontAwesome
+                  style={{color: 'red'}}
+                  name='circle' />
               </OverlayTrigger>}
             <div className='pull-right'>
               {deletingPageId !== id &&

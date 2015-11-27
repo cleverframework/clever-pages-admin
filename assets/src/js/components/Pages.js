@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { PropTypes, Component } from 'react'
 import Page from './Page'
 

@@ -1,3 +1,5 @@
+'use strict'
+
 import * as types from '../constants/ActionTypes'
 
 function textSearchFilter (state = '', action) {
