@@ -120,7 +120,7 @@ class EditPage extends Component {
 
 EditPage.propTypes = {
   isFetchingPage: PropTypes.bool.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   medias: PropTypes.array.isRequired,

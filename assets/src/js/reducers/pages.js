@@ -16,7 +16,7 @@ function pages (state = {
   isCreating: false,
   isToggling: false,
   isDeleting: false,
-  deletingPageId: '',
+  deletingPageId: -1,
   togglingPageId: '',
   createFormInputNameValue: '',
   items: []

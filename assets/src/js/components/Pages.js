@@ -31,7 +31,7 @@ export default class Pages extends Component {
 Pages.propTypes = {
   pages: PropTypes.array.isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  deletingPageId: PropTypes.string.isRequired,
+  deletingPageId: PropTypes.number.isRequired,
   onTogglePublish: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }

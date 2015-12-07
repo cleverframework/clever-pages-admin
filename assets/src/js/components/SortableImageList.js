@@ -50,7 +50,7 @@ export default class SortableImageList extends Component {
 }
 
 SortableImageList.propTypes = {
-  mediaId: PropTypes.string.isRequired,
+  mediaId: PropTypes.number.isRequired,
   images: PropTypes.array.isRequired,
   onSort: PropTypes.func.isRequired,
   onUpdateImage: PropTypes.func.isRequired,

@@ -58,7 +58,7 @@ export default class SortableImageList extends Component {
 }
 
 SortableImageList.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   filename: PropTypes.string.isRequired,
   caption: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,

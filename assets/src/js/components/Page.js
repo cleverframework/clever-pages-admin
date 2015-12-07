@@ -64,10 +64,10 @@ export default class Pages extends Component {
 }
 
 Pages.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   published: PropTypes.bool.isRequired,
-  deletingPageId: PropTypes.string.isRequired,
+  deletingPageId: PropTypes.number.isRequired,
   onTogglePublish: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }

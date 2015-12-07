@@ -113,7 +113,7 @@ ListPage.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isCreating: PropTypes.bool.isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  deletingPageId: PropTypes.string.isRequired,
+  deletingPageId: PropTypes.number.isRequired,
   createFormInputNameValue: PropTypes.string.isRequired,
   publishStatusFilter: PropTypes.string.isRequired,
   textSearchFilter: PropTypes.string.isRequired,
