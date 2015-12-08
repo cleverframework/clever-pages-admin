@@ -28,11 +28,11 @@ export default class Header extends Component {
   }
 
   renderForm () {
-    const { name, description } = this.props
+    const { id, name, description } = this.props
     return (
       <div className='row'>
         <div className='row'>
-          <h3>{this.state.name}</h3>
+          <h3>{this.state.name || `Page ${id}`}</h3>
           <br />
         </div>
         <div className='row'>
@@ -78,7 +78,7 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
-  name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  description: PropTypes.string,
   onUpdate: PropTypes.func.isRequired
 }
