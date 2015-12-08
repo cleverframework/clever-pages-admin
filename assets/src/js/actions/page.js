@@ -2,7 +2,7 @@
 
 import { Request } from '../middlewares/api'
 import * as types from '../constants/ActionTypes'
-import { PAGES_URL } from '../constants/URLs'
+import { PAGES_URL, QUERY_LANG } from '../constants/URLs'
 
 function fetchPageRequest (id) {
   return { type: types.FETCH_PAGE_REQUEST, id }
@@ -19,7 +19,7 @@ function fetchPageFailure (error) {
 export function fetchPage (id) {
   return dispatch => {
     dispatch(fetchPageRequest(id))
-    Request.get(`${PAGES_URL}/${id}`)
+    Request.get(`${PAGES_URL}/${id}?lang=${QUERY_LANG}`)
       .then(json => dispatch(fetchPageSuccess(json)))
       .catch(err => fetchPageFailure(err))
   }
@@ -40,7 +40,7 @@ function updateHeaderFailure (error) {
 export function updateHeader (id, headerParams) {
   return dispatch => {
     dispatch(updateHeaderRequest(id))
-    Request.put(`${PAGES_URL}/${id}`, headerParams)
+    Request.put(`${PAGES_URL}/${id}?lang=${QUERY_LANG}`, headerParams)
       .then(json => dispatch(updateHeaderSuccess(json)))
       .catch(err => dispatch(updateHeaderFailure(err)))
   }
