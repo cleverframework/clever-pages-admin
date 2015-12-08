@@ -79,13 +79,13 @@ function pages (state = {
       })
     case types.DELETE_PAGE_FAILURE:
       return Object.assign({}, state, {
-        deletingPageId: '',
+        deletingPageId: -1,
         isDeleting: false
       })
     case types.DELETE_PAGE_SUCCESS:
       index = findIndex(state.items, action.page.id)
       return Object.assign({}, state, {
-        deletingPageId: '',
+        deletingPageId: -1,
         isDeleting: false,
         items: [
           ...state.items.slice(0, index),
