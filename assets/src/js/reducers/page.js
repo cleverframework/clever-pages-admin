@@ -12,7 +12,7 @@ function findIndex (list, id) {
 }
 
 function page (state = {
-  id: '',
+  id: -1,
   name: '',
   description: '',
   medias: [],
