@@ -12,6 +12,6 @@ export default class Media extends Component {
 Media.propTypes = {
   id: PropTypes.number.isRequired,
   vid: PropTypes.number.isRequired,
-  reference: PropTypes.string.isRequired,
+  reference: PropTypes.string,
   onDelete: PropTypes.func.isRequired
 }

@@ -77,9 +77,9 @@ export default class Medias extends Component {
               id={media.id}
               vid={counter.button}
               reference={media.reference}
-              text={media.text}
+              name={media.name}
               link={media.link}
-              file={media.file}
+              file={media.buttonFile}
               onUpdate={onUpdate}
               onDelete={onDelete}
               onUploadFile={onUploadFileMedia} />

@@ -24,7 +24,7 @@ export default class ButtonMedia extends Media {
     e.preventDefault()
     onUpdate(id, {
       reference: this.refs.reference.value,
-      text: this.refs.text.value,
+      name: this.refs.name.value,
       link: this.refs.link.value
     })
   }
@@ -44,7 +44,7 @@ export default class ButtonMedia extends Media {
 
   render () {
     const {
-      id, reference, text, link, file
+      id, reference, name, link, file
     } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
@@ -88,12 +88,12 @@ export default class ButtonMedia extends Media {
                   onBlur={this.update.bind(this)} />
               </div>
               <div className='form-group'>
-                <label>Text</label>
+                <label>Name</label>
                 <input
                   type='text'
                   className='form-control'
-                  defaultValue={text}
-                  ref='text'
+                  defaultValue={name}
+                  ref='name'
                   onBlur={this.update.bind(this)} />
               </div>
               <div className='form-group'>
@@ -137,8 +137,8 @@ export default class ButtonMedia extends Media {
 }
 
 ButtonMedia.propTypes = Object.assign({}, Media.propTypes, {
-  text: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  link: PropTypes.string,
   file: PropTypes.object,
   onUpdate: PropTypes.func.isRequired,
   onUploadFile: PropTypes.func.isRequired

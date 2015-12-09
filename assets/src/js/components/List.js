@@ -57,7 +57,6 @@ export default class List extends Component {
   }
 
   render () {
-    console.log('Rerender')
     const listItems = this.state.data.map((item, i) => {
       return (
         <li data-id={i}

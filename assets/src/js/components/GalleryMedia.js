@@ -135,9 +135,8 @@ export default class GalleryMedia extends Media {
 }
 
 GalleryMedia.propTypes = Object.assign({}, Media.propTypes, {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  imageFiles: PropTypes.array.isRequired,
+  name: PropTypes.string,
+  imageFiles: PropTypes.array.isRequired, // if no files must be an empty array
   onUpdate: PropTypes.func.isRequired,
   onUploadImage: PropTypes.func.isRequired,
   onUpdateImage: PropTypes.func.isRequired,

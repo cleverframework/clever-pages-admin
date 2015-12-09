@@ -127,7 +127,7 @@ export default class ImageMedia extends Media {
 }
 
 ImageMedia.propTypes = Object.assign({}, Media.propTypes, {
-  caption: PropTypes.string.isRequired,
+  caption: PropTypes.string,
   imageFile: PropTypes.object,
   onUpdate: PropTypes.func.isRequired,
   onUploadImage: PropTypes.func.isRequired

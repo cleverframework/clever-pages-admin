@@ -105,7 +105,7 @@ export default class TextMedia extends Media {
 }
 
 TextMedia.propTypes = Object.assign({}, Media.propTypes, {
-  name: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  content: PropTypes.string,
   onUpdate: PropTypes.func.isRequired
 })
