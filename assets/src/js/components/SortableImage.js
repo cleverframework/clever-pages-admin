@@ -30,10 +30,20 @@ export default class SortableImageList extends Component {
       <Tooltip id={`tooltip-delete-gallery-image-${id}`}>Delete</Tooltip>
     )
 
+    const styleListElement = {
+      backgroundImage: `url(/files/${filename})`,
+      width: '100%',
+      height: '64px',
+      display: 'block',
+      backgroundSize: '64px 64px',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'left top'
+    }
+
     return (
       <li id={this.props.id}
         className='ui-state-default'
-        style={{backgroundImage: `url(/files/${filename})`}}>
+        style={styleListElement}>
         <input
           defaultValue={caption}
           type='text'
