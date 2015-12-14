@@ -6,6 +6,7 @@ import actions from '../actions'
 import Header from '../components/Header'
 import Medias from '../components/Medias'
 import CreateMediaForm from '../components/CreateMediaForm'
+import PageActionForm from '../components/PageActionForm'
 
 const {
   fetchPage,
@@ -72,9 +73,13 @@ class EditPage extends Component {
     dispatch(sortGalleryMedia(id, mediaId, sortedIds))
   }
 
+  onVersionCreate () {
+    // Do Stuff
+  }
+
   render () {
     const {
-      isFetchingPage, id,
+      isFetchingPage, id, version,
       name, description,
       medias
     } = this.props
@@ -82,37 +87,47 @@ class EditPage extends Component {
     return (
       <div className='row'>
 
-        {isFetchingPage &&
-          <div className='row'>
-            <div className='col-sm-12'>
-              <h2>Loading...</h2>
+        <div className="col-sm-8">
+
+          {isFetchingPage &&
+            <div className='row'>
+              <div className='col-sm-12'>
+                <h2>Loading...</h2>
+              </div>
             </div>
-          </div>
-        }
+          }
 
-        {!isFetchingPage &&
-          <Header
-            id={id}
-            name={name}
-            description={description}
-            onUpdate={this.onUpdateHeader.bind(this)} />}
+          {!isFetchingPage &&
+            <Header
+              id={id}
+              name={name}
+              description={description}
+              onUpdate={this.onUpdateHeader.bind(this)} />}
 
-        {!isFetchingPage &&
-          <Medias
-            medias={medias}
-            onUpdate={this.onUpdateMedia.bind(this)}
-            onUploadFileMedia={this.onUploadFileMedia.bind(this)} // create
-            onUpdateFileMedia={this.onUpdateFileMedia.bind(this)}
-            onDeleteFileMedia={this.onDeleteFileMedia.bind(this)}
-            onSortGalleryMedia={this.onSortGalleryMedia.bind(this)}
-            onDelete={this.onDeleteMedia.bind(this)} />}
+          {!isFetchingPage &&
+            <Medias
+              medias={medias}
+              onUpdate={this.onUpdateMedia.bind(this)}
+              onUploadFileMedia={this.onUploadFileMedia.bind(this)} // create
+              onUpdateFileMedia={this.onUpdateFileMedia.bind(this)}
+              onDeleteFileMedia={this.onDeleteFileMedia.bind(this)}
+              onSortGalleryMedia={this.onSortGalleryMedia.bind(this)}
+              onDelete={this.onDeleteMedia.bind(this)} />}
 
-        {!isFetchingPage &&
-          <br /> }
+          {!isFetchingPage &&
+            <br /> }
 
-        {!isFetchingPage &&
-          <CreateMediaForm
-            onCreate={this.onCreateMedia.bind(this)} />}
+          {!isFetchingPage &&
+            <CreateMediaForm
+              onCreate={this.onCreateMedia.bind(this)} />}
+        </div>
+
+        <div className='col-sm-4'>
+          {!isFetchingPage &&
+            <PageActionForm
+              version={version}
+              onVersionCreate={this.onVersionCreate.bind(this)} />}
+        </div>
       </div>
     )
   }
@@ -121,6 +136,7 @@ class EditPage extends Component {
 EditPage.propTypes = {
   isFetchingPage: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
+  version: PropTypes.string.isRequired,
   name: PropTypes.string,
   description: PropTypes.string,
   medias: PropTypes.array.isRequired,
