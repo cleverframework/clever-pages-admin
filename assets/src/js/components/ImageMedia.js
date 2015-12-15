@@ -112,10 +112,14 @@ export default class ImageMedia extends Media {
                     </div>
                   </div>}
                 {!imageFile &&
-                  <Uploader
-                    multiple={this.multiple}
-                    accept={this.accept}
-                    onUpload={this.uploadImage.bind(this)} />}
+                  <div className='row'>
+                    <div className='col-xs-12'>
+                      <Uploader
+                        multiple={this.multiple}
+                        accept={this.accept}
+                        onUpload={this.uploadImage.bind(this)} />
+                    </div>
+                  </div>}
               </div>
             </form>
           </div>

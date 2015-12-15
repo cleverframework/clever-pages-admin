@@ -3,6 +3,7 @@
 import React, { PropTypes, Component } from 'react'
 import FontAwesome from 'react-fontawesome'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
+import shortid from 'shortid'
 
 export default class Uploader extends Component {
 
@@ -28,7 +29,7 @@ export default class Uploader extends Component {
 
   render () {
     const tooltipUpload = (
-      <Tooltip>Accept: {this.props.accept}</Tooltip>
+      <Tooltip id={shortid.generate()}>Accept: {this.props.accept}</Tooltip>
     )
 
     return (

@@ -19,7 +19,6 @@ export default class PageActionForm extends Component {
                 <label>Current Version:</label> {version}
               </div>
               <button type='button' className='btn btn-primary btn-lg btn-block'>Save</button>
-              <button type='button' className='btn btn-danger btn-lg btn-block disabled'>Delete</button>
             </form>
           </div>
         </div>
