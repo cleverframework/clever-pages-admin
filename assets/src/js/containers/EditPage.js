@@ -136,7 +136,7 @@ class EditPage extends Component {
 EditPage.propTypes = {
   isFetchingPage: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
-  version: PropTypes.string.isRequired,
+  version: PropTypes.number.isRequired,
   name: PropTypes.string,
   description: PropTypes.string,
   medias: PropTypes.array.isRequired,
@@ -147,7 +147,7 @@ EditPage.propTypes = {
 function mapStateToProps (state) {
   const { page } = state
   const {
-    isFetchingPage, id,
+    isFetchingPage, id, version,
     name, description,
     medias
   } = page
@@ -155,6 +155,7 @@ function mapStateToProps (state) {
   return {
     isFetchingPage,
     id,
+    version,
     name,
     description,
     medias

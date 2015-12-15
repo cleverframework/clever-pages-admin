@@ -104,8 +104,7 @@ export default class ImageMedia extends Media {
                         style={{ width: '64px', height: '64px' }}
                         src={`/files/${imageFile.filename}`} />
                     </div>
-                    <div className='col-xs-11'>
-                      <br />
+                    <div className='col-xs-11' style={{paddingLeft: '30px', paddingTop: '15px'}}>
                       <Uploader
                         multiple={this.multiple}
                         accept={this.accept}

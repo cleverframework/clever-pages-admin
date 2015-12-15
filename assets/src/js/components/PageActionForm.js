@@ -11,13 +11,15 @@ export default class PageActionForm extends Component {
   renderForm () {
     const { id, version } = this.props
     return (
-      <div className="col-xs-12">
+      <div className='col-xs-12' style={{paddingTop: '75px'}}>
         <div className='panel panel-default'>
           <div className='panel-body'>
             <form role='form'>
               <div className='form-group'>
-                <label>Version: {version}</label>
+                <label>Current Version:</label> {version}
               </div>
+              <button type='button' className='btn btn-primary btn-lg btn-block'>Save</button>
+              <button type='button' className='btn btn-danger btn-lg btn-block disabled'>Delete</button>
             </form>
           </div>
         </div>
@@ -32,6 +34,6 @@ export default class PageActionForm extends Component {
 }
 
 PageActionForm.PageActionForm = {
-  version: PropTypes.string.isRequired,
+  version: PropTypes.number.isRequired,
   onVersionCreate: PropTypes.func.isRequired
 }

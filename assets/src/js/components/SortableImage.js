@@ -26,8 +26,12 @@ export default class SortableImageList extends Component {
   render () {
     const { id, filename, caption } = this.props
 
-    const tooltip = (
+    const tooltipDelete = (
       <Tooltip id={`tooltip-delete-gallery-image-${id}`}>Delete</Tooltip>
+    )
+
+    const tooltipCrop = (
+      <Tooltip id={`tooltip-crop-gallery-image-${id}`}>Crop</Tooltip>
     )
 
     const styleListElement = {
@@ -51,11 +55,21 @@ export default class SortableImageList extends Component {
           placeholder='Caption'
           className='form-control gallery-image-input-caption'
           onBlur={this.update.bind(this)} />
-        <OverlayTrigger placement='top' overlay={tooltip}>
+        <OverlayTrigger placement='top' overlay={tooltipCrop}>
           <button
             className='btn btn-default'
             onClick={this.delete.bind(this)}
             style={{marginTop: '-3.5px'}}
+            type='button'>
+            <FontAwesome
+              name='crop' />
+          </button>
+        </OverlayTrigger>
+        <OverlayTrigger placement='top' overlay={tooltipDelete}>
+          <button
+            className='btn btn-default'
+            onClick={this.delete.bind(this)}
+            style={{marginTop: '-3.5px', marginLeft: '10px'}}
             type='button'>
             <FontAwesome
               style={{color: 'red'}}

@@ -1,6 +1,8 @@
 'use strict'
 
 import React, { PropTypes, Component } from 'react'
+import FontAwesome from 'react-fontawesome'
+import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 export default class Uploader extends Component {
 
@@ -25,13 +27,23 @@ export default class Uploader extends Component {
   }
 
   render () {
+    const tooltipUpload = (
+      <Tooltip>Accept: {this.props.accept}</Tooltip>
+    )
+
     return (
-      <input
-        type='file'
-        ref='uploader'
-        multiple={this.props.multiple}
-        accept={this.props.accept}
-        onChange={this.upload.bind(this)} />
+      <OverlayTrigger placement='right' overlay={tooltipUpload}>
+        <span className='btn btn-default btn-file'>
+        <FontAwesome
+          name='cloud-upload' /> Upload
+          <input
+            type='file'
+            ref='uploader'
+            multiple={this.props.multiple}
+            accept={this.props.accept}
+            onChange={this.upload.bind(this)} />
+        </span>
+      </OverlayTrigger>
     )
   }
 }
