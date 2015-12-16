@@ -119,8 +119,7 @@ export default class GalleryMedia extends Media {
                     onSort={onSort}
                     onUpdateImage={this.updateImage.bind(this)}
                     onDeleteImage={this.deleteImage.bind(this)} />}
-                {imageFiles.length > 0 &&
-                  <br />}
+                <br />
                 <Uploader
                   multiple={this.multiple}
                   accept={this.accept}

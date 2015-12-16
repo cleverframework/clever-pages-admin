@@ -43,6 +43,7 @@ function page (state = {
         isFetchingPage: false,
         id: action.page.id,
         name: action.page.name,
+        version: action.page.version,
         description: action.page.description,
         medias: action.page.medias
       })
