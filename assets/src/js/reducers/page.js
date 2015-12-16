@@ -35,8 +35,8 @@ function page (state = {
       })
     case types.FETCH_PAGE_FAILURE:
       return Object.assign({}, state, {
-        isFetchingPage: false,
-        page: action.page
+        isFetchingPage: false
+        // TODO: show error
       })
     case types.FETCH_PAGE_SUCCESS:
       return Object.assign({}, state, {
@@ -167,6 +167,25 @@ function page (state = {
           action.media,
           ...state.medias.slice(index + 1)
         ]
+      })
+
+    case types.BUMP_VERSION_REQUEST:
+      return Object.assign({}, state, {
+        isFetchingPage: true
+      })
+    case types.BUMP_VERSION_FAILURE:
+      return Object.assign({}, state, {
+        isFetchingPage: false
+        // TODO: show error
+      })
+    case types.BUMP_VERSION_SUCCESS:
+      return Object.assign({}, state, {
+        isFetchingPage: false,
+        id: action.page.id,
+        name: action.page.name,
+        version: action.page.version,
+        description: action.page.description,
+        medias: action.page.medias
       })
 
     // TODO:

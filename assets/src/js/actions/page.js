@@ -199,3 +199,24 @@ export function sortGalleryMedia (pageId, mediaId, sortedIds) {
       .catch(err => dispatch(sortGalleryMediaFailure(err)))
   }
 }
+
+function bumpVersionRequest (pageId) {
+  return { type: types.BUMP_VERSION_REQUEST, pageId }
+}
+
+function bumpVersionSuccess (json) {
+  return { type: types.BUMP_VERSION_SUCCESS, page: json }
+}
+
+function bumpVersionFailure (error) {
+  return { type: types.BUMP_VERSION_FAILURE, error }
+}
+
+export function bumpVersion (pageId) {
+  return dispatch => {
+    dispatch(bumpVersionRequest(pageId))
+    Request.post(`${PAGES_URL}/${pageId}/bump-version`)
+      .then(json => dispatch(bumpVersionSuccess(json)))
+      .catch(err => dispatch(bumpVersionFailure(err)))
+  }
+}

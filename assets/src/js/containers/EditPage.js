@@ -10,6 +10,7 @@ import PageActionForm from '../components/PageActionForm'
 
 const {
   fetchPage,
+  bumpVersion,
   updateHeader,
   createMedia,
   updateMedia,
@@ -73,8 +74,9 @@ class EditPage extends Component {
     dispatch(sortGalleryMedia(id, mediaId, sortedIds))
   }
 
-  onVersionCreate () {
-    // Do Stuff
+  onBumpVersion () {
+    const { id, dispatch } = this.props
+    dispatch(bumpVersion(id))
   }
 
   render () {
@@ -126,7 +128,7 @@ class EditPage extends Component {
           {!isFetchingPage &&
             <PageActionForm
               version={version}
-              onVersionCreate={this.onVersionCreate.bind(this)} />}
+              onBumpVersion={this.onBumpVersion.bind(this)} />}
         </div>
       </div>
     )

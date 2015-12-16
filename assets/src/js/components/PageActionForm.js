@@ -9,7 +9,7 @@ export default class PageActionForm extends Component {
   }
 
   renderForm () {
-    const { id, version } = this.props
+    const { id, version, onBumpVersion } = this.props
     return (
       <div className='col-xs-12' style={{paddingTop: '75px'}}>
         <div className='panel panel-default'>
@@ -18,7 +18,10 @@ export default class PageActionForm extends Component {
               <div className='form-group'>
                 <label>Current Version:</label> {version}
               </div>
-              <button type='button' className='btn btn-primary btn-lg btn-block'>Save</button>
+              <button
+                className='btn btn-primary btn-lg btn-block'
+                onClick={onBumpVersion}
+                type='button'>Save</button>
             </form>
           </div>
         </div>
@@ -34,5 +37,5 @@ export default class PageActionForm extends Component {
 
 PageActionForm.PageActionForm = {
   version: PropTypes.number.isRequired,
-  onVersionCreate: PropTypes.func.isRequired
+  onBumpVersion: PropTypes.func.isRequired
 }
