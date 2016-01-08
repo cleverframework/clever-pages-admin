@@ -17,7 +17,12 @@ export default class SortableImageList extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showCropper: false
+      imageId: null,
+      cropperTitle: 'Cropper',
+      cropperShow: false,
+      cropperSrc: 'http://fengyuanchen.github.io/cropper/img/picture.jpg',
+      cropperAspectRatio: window.cropperAspectRatio || 16/9,
+      cropperGuides: true
     }
   }
 
@@ -30,36 +35,42 @@ export default class SortableImageList extends Component {
     // console.log(this.refs.cropper.getCroppedCanvas().toDataURL())
   }
 
-  showCropperTool () {
-    console.log('copping .... ')
-    this.setState({ showCropper: true})
+  cropperShowTool (imageId, imageSrc, imageCaption) {
+    const currentState = this.state
+    currentState.imageId = imageId
+    currentState.cropperSrc = imageSrc
+    currentState.cropperCaption = imageCaption
+    currentState.cropperShow = true
+    this.setState(currentState)
   }
 
   hideCropperTool () {
-    this.setState({ showCropper: false})
+    const currentState = this.state
+    currentState.cropperShow = false
+    this.setState(currentState)
   }
 
   renderCropper () {
     return (
       <Modal
-        show={this.state.showCropper}
+        show={this.state.cropperShow}
         onHide={this.hideCropperTool.bind(this)}
         container={this}
-        aria-labelledby="contained-modal-title">
+        aria-labelledby='contained-modal-title'>
 
         <ModalHeader closeButton>
-          <ModalTitle id="contained-modal-title">Contained Modal</ModalTitle>
+          <ModalTitle id='contained-modal-title'>Cropper [{this.state.cropperCaption}]</ModalTitle>
         </ModalHeader>
 
         <ModalBody>
           <Cropper
             ref='cropper'
-            src='http://fengyuanchen.github.io/cropper/img/picture.jpg'
+            src={`/files/${this.state.cropperSrc}`}
             style={{height: 400, width: '100%'}}
             // Cropper.js options
-            aspectRatio={16 / 9}
-            guides={true}
-            crop={this.crop} />
+            aspectRatio={this.state.cropperAspectRatio}
+            guides={this.state.cropperGuides}
+            crop={this.crop.bind(this)} />
         </ModalBody>
 
         <ModalFooter>
@@ -95,7 +106,7 @@ export default class SortableImageList extends Component {
           id={image.id}
           caption={image.caption}
           filename={image.filename}
-          onShowCropTool={this.showCropperTool.bind(this)}
+          onShowCropTool={this.cropperShowTool.bind(this)}
           onUpdate={onUpdateImage}
           onDelete={onDeleteImage} />
       )

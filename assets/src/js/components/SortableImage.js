@@ -23,6 +23,11 @@ export default class SortableImageList extends Component {
     if (confirm('Are you sure?')) onDelete(id)
   }
 
+  onShowCropTool () {
+    const { id, filename, caption, onShowCropTool } = this.props
+    onShowCropTool(id, filename, caption)
+  }
+
   render () {
     const { id, filename, caption, onShowCropTool } = this.props
 
@@ -58,7 +63,7 @@ export default class SortableImageList extends Component {
         <OverlayTrigger placement='top' overlay={tooltipCrop}>
           <button
             className='btn btn-default'
-            onClick={onShowCropTool}
+            onClick={this.onShowCropTool.bind(this)}
             style={{marginTop: '-3.5px'}}
             type='button'>
             <FontAwesome
