@@ -7,8 +7,8 @@
   "scripts": {
     "build": "npm run build-js && npm run build-css",
     "watch": "npm run watch-js && npm run watch-css",
-    "build-js": "mkdir -p assets/dist/js && browserify assets/src/js/index.js | uglifyjs > assets/dist/js/index.js",
-    "watch-js": "mkdir -p assets/dist/js && watchify assets/src/js/index.js -o assets/dist/js/index.js --debug --verbose",
+    "build-js": "mkdir -p assets/dist/js && browserify -g browserify-css assets/src/js/index.js | cat > assets/dist/js/index.js",
+    "watch-js": "mkdir -p assets/dist/js && watchify -g browserify-css assets/src/js/index.js assets/src/js/index.js -o assets/dist/js/index.js --debug --verbose",
     "watch-css": "mkdir -p assets/dist/css && sourdough -w -v assets/src/styl/index.styl assets/dist/css/index.css",
     "build-css": "mkdir -p assets/dist/css && sourdough -c assets/src/styl/index.styl assets/dist/css/index.css",
     "copy-fonts": "cp -rf assets/src/fonts assets/dist/fonts"
@@ -23,9 +23,7 @@
     "transform": [
       "browserify-shim",
       "babelify",
-      "reactify",
-      "browserify-css"
-    ]
+      "reactify"    ]
   },
   "dependencies": {
     "attr-accept": "^1.0.3",

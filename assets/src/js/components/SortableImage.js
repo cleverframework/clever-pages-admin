@@ -24,7 +24,7 @@ export default class SortableImageList extends Component {
   }
 
   render () {
-    const { id, filename, caption } = this.props
+    const { id, filename, caption, onShowCropTool } = this.props
 
     const tooltipDelete = (
       <Tooltip id={`tooltip-delete-gallery-image-${id}`}>Delete</Tooltip>
@@ -58,7 +58,7 @@ export default class SortableImageList extends Component {
         <OverlayTrigger placement='top' overlay={tooltipCrop}>
           <button
             className='btn btn-default'
-            onClick={this.delete.bind(this)}
+            onClick={onShowCropTool}
             style={{marginTop: '-3.5px'}}
             type='button'>
             <FontAwesome
@@ -86,5 +86,6 @@ SortableImageList.propTypes = {
   filename: PropTypes.string,
   caption: PropTypes.string,
   onUpdate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  onShowCropTool: PropTypes.func.isRequired
 }
