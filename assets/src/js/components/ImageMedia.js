@@ -41,6 +41,11 @@ export default class ImageMedia extends Media {
     })
   }
 
+  onShowCropTool () {
+    const { caption, imageFile, onShowCropTool } = this.props
+    onShowCropTool(imageFile.id, imageFile.filename, caption)
+  }
+
   render () {
     const {
       id, reference, caption, imageFile
@@ -51,6 +56,10 @@ export default class ImageMedia extends Media {
 
     const tooltip = (
       <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
+    )
+
+    const tooltipCrop = (
+      <Tooltip id={`tooltip-crop-gallery-image-${imageFile.id}`}>Crop</Tooltip>
     )
 
     return (
@@ -109,6 +118,16 @@ export default class ImageMedia extends Media {
                         multiple={this.multiple}
                         accept={this.accept}
                         onUpload={this.uploadImage.bind(this)} />
+                      <OverlayTrigger placement='top' overlay={tooltipCrop}>
+                        <button
+                          className='btn btn-default'
+                          onClick={this.onShowCropTool.bind(this)}
+                          style={{marginLeft: '10px'}}
+                          type='button'>
+                          <FontAwesome
+                            name='crop' />
+                        </button>
+                      </OverlayTrigger>
                     </div>
                   </div>}
                 {!imageFile &&
@@ -133,5 +152,6 @@ ImageMedia.propTypes = Object.assign({}, Media.propTypes, {
   caption: PropTypes.string,
   imageFile: PropTypes.object,
   onUpdate: PropTypes.func.isRequired,
-  onUploadImage: PropTypes.func.isRequired
+  onUploadImage: PropTypes.func.isRequired,
+  onShowCropTool: PropTypes.func.isRequired
 })

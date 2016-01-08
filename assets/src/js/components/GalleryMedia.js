@@ -57,7 +57,7 @@ export default class GalleryMedia extends Media {
   render () {
     const {
       id, reference, name, imageFiles,
-      onSort
+      onSort, onShowCropTool
     } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
@@ -118,6 +118,7 @@ export default class GalleryMedia extends Media {
                     images={imageFiles}
                     onSort={onSort}
                     onUpdateImage={this.updateImage.bind(this)}
+                    onShowCropTool={onShowCropTool}
                     onDeleteImage={this.deleteImage.bind(this)} />}
                 <br />
                 <Uploader
@@ -140,5 +141,6 @@ GalleryMedia.propTypes = Object.assign({}, Media.propTypes, {
   onUploadImage: PropTypes.func.isRequired,
   onUpdateImage: PropTypes.func.isRequired,
   onDeleteImage: PropTypes.func.isRequired,
-  onSort: PropTypes.func.isRequired
+  onSort: PropTypes.func.isRequired,
+  onShowCropTool: PropTypes.func.isRequired
 })
