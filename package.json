@@ -22,7 +22,9 @@
   "browserify": {
     "transform": [
       "browserify-shim",
-      "babelify"
+      "babelify",
+      "reactify",
+      "browserify-css"
     ]
   },
   "dependencies": {
@@ -39,6 +41,7 @@
     "nativesortable": "0.0.1",
     "react": "^0.14.2",
     "react-bootstrap": "^0.28.1",
+    "react-cropper": "^0.5.1",
     "react-dom": "^0.14.0",
     "react-fontawesome": "^0.3.3",
     "react-mixin": "^2.0.2",
@@ -53,10 +56,12 @@
   "devDependencies": {
     "babelify": "^6.1.0",
     "browser-sync": "^2.1.6",
+    "browserify-css": "^0.8.4",
     "browserify": "^11.2.0",
     "browserify-shim": "^3.8.10",
     "sourdough-preprocessor": "^1.0.0",
     "uglify-js": "^2.4.15",
-    "watchify": "^2.1.1"
+    "watchify": "^2.1.1",
+    "reactify": "^1.1.1"
   }
 }
