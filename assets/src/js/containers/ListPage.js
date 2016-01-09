@@ -19,10 +19,7 @@ const {
 class ListPage extends Component {
   constructor (props) {
     super(props)
-    this.wasCreating = false
-    this.wasDeleting = false
     this._notificationSystem = null
-    this._notificationActive = null
   }
 
   onTogglePublish (pageId, published) {
@@ -32,13 +29,11 @@ class ListPage extends Component {
 
   onDelete (pageId) {
     const { dispatch } = this.props
-    this._addNotification('Deleting', 'error')
-    dispatch(deletePage(pageId))
+    dispatch(deletePage(pageId, this._notificationSystem))
   }
 
   onCreate (name) {
     const { dispatch } = this.props
-    this._addNotification('Creating', 'success')
     dispatch(createPage(name))
   }
 
@@ -46,23 +41,6 @@ class ListPage extends Component {
     const { dispatch } = this.props
     this._notificationSystem = this.refs.notificationSystem
     dispatch(fetchPages())
-  }
-
-  // Give your whole app a method to call and trigger a notification
-  _addNotification (title, level) {
-    this._notificationActive = this._notificationSystem.addNotification({
-      title,
-      message: 'Please don\'t refresh the page.',
-      level: level || 'info',
-      dismissible: false,
-      autoDismiss: 0
-    })
-  }
-
-  _removeNotificationActive () {
-    setTimeout(() => {
-      this._notificationSystem.removeNotification(this._notificationActive)
-    }, 1500)
   }
 
   render () {
@@ -73,15 +51,6 @@ class ListPage extends Component {
       isDeleting, deletingPageId,
       dispatch
     } = this.props
-
-    if ((this.wasDeleting && !isDeleting) ||
-      (this.wasCreating && !isCreating)) {
-        this._removeNotificationActive()
-    }
-
-    // Save previous status
-    this.wasCreating = isCreating
-    this.wasDeleting = isDeleting
 
     return (
       <section id='ListPage'>

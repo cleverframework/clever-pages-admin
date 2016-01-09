@@ -4,6 +4,36 @@ import { Request } from '../middlewares/api'
 import * as types from '../constants/ActionTypes'
 import { PAGES_URL } from '../constants/URLs'
 
+// Helpers
+function addNotification (title, level, autoDismiss) {
+  let message = 'Please don\'t refresh the page.'
+  switch (level) {
+    case 'error':
+      message: 'Oops! Something went wrong.'
+      break
+    case 'success':
+      message: 'Awesome! Everything went smooth.'
+      break
+    default:
+      // something ?
+  }
+
+  return this.addNotification({
+    title,
+    message,
+    level,
+    dismissible: false,
+    autoDismiss: autoDismiss || 0
+  })
+}
+
+function removeNotification (notification) {
+  setTimeout(() => {
+    this.removeNotification(notification)
+  }, 1500)
+}
+
+// Actions
 function requestPages () {
   return {
     type: types.REQUEST_PAGES
@@ -80,11 +110,20 @@ function deletePageFailure (error) {
   return { type: types.DELETE_PAGE_FAILURE, error }
 }
 
-export function deletePage (id) {
+export function deletePage (id, NotificationSystem) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deletePageRequest(id))
     Request.delete(`${PAGES_URL}/${id}`)
-      .then(json => dispatch(deletePageSuccess(json)))
-      .catch(err => dispatch(deletePageFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Deleted', 'success', 3)
+        dispatch(deletePageSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(deletePageFailure(err))
+      })
   }
 }
