@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import NotificationSystem from 'react-notification-system'
 import actions from '../actions'
 import * as PageFilters from '../constants/PageFilters'
 import Pages from '../components/Pages'
@@ -18,6 +19,10 @@ const {
 class ListPage extends Component {
   constructor (props) {
     super(props)
+    this.wasCreating = false
+    this.wasDeleting = false
+    this._notificationSystem = null
+    this._notificationActive = null
   }
 
   onTogglePublish (pageId, published) {
@@ -27,12 +32,37 @@ class ListPage extends Component {
 
   onDelete (pageId) {
     const { dispatch } = this.props
+    this._addNotification('Deleting', 'error')
     dispatch(deletePage(pageId))
+  }
+
+  onCreate (name) {
+    const { dispatch } = this.props
+    this._addNotification('Creating', 'success')
+    dispatch(createPage(name))
   }
 
   componentDidMount () {
     const { dispatch } = this.props
+    this._notificationSystem = this.refs.notificationSystem
     dispatch(fetchPages())
+  }
+
+  // Give your whole app a method to call and trigger a notification
+  _addNotification (title, level) {
+    this._notificationActive = this._notificationSystem.addNotification({
+      title,
+      message: 'Please don\'t refresh the page.',
+      level: level || 'info',
+      dismissible: false,
+      autoDismiss: 0
+    })
+  }
+
+  _removeNotificationActive () {
+    setTimeout(() => {
+      this._notificationSystem.removeNotification(this._notificationActive)
+    }, 1500)
   }
 
   render () {
@@ -44,8 +74,18 @@ class ListPage extends Component {
       dispatch
     } = this.props
 
+    if ((this.wasDeleting && !isDeleting) ||
+      (this.wasCreating && !isCreating)) {
+        this._removeNotificationActive()
+    }
+
+    // Save previous status
+    this.wasCreating = isCreating
+    this.wasDeleting = isDeleting
+
     return (
       <section id='ListPage'>
+        <NotificationSystem ref='notificationSystem' />
         <div className='row'>
           <div id='filter-panel' className='filter-panel'>
             <div className='panel panel-default'>
@@ -100,9 +140,7 @@ class ListPage extends Component {
         <CreateForm
           inputNameValue={createFormInputNameValue}
           disabled={isCreating}
-          onCreateClick={name =>
-            dispatch(createPage(name))
-          } />
+          onCreateClick={this.onCreate.bind(this)} />
       </section>
     )
   }
