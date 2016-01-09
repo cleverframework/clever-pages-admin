@@ -19,27 +19,43 @@ export default class Medias extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      imageId: null,
+      cropperMediaId: null,
+      cropperImageId: null,
       cropperTitle: 'Cropper',
       cropperShow: false,
       cropperSrc: 'http://fengyuanchen.github.io/cropper/img/picture.jpg',
       cropperAspectRatio: window.cropperAspectRatio || 16/9,
-      cropperGuides: true
+      cropperGuides: true,
+      cropperZoomable: false
     }
   }
 
-  crop () {
-    // image in dataUrl
+  onCrop () {
+    const { onUpdateFileMedia } = this.props
+    const cropper = this.refs.cropper
+    const params = { metadata: JSON.stringify(cropper.getCropBoxData()) }
+    onUpdateFileMedia(this.state.cropperMediaId, this.state.cropperImageId, params)
+    this.hideCropperTool()
+  }
+
+  dumbCrop () {
     // console.log(this.refs.cropper.getCroppedCanvas().toDataURL())
   }
 
-  showCropperTool (imageId, imageSrc, imageCaption) {
+  showCropperTool (mediaId, imageId, imageSrc, imageCaption, imageMetadata) {
     const currentState = this.state
-    currentState.imageId = imageId
-    currentState.cropperSrc = imageSrc
+    currentState.cropperMediaId = mediaId
+    currentState.cropperImageId = imageId
+    currentState.cropperSrc = `/files/${imageSrc}`
     currentState.cropperCaption = imageCaption
     currentState.cropperShow = true
     this.setState(currentState)
+
+    // Need a setTimeout otherwise this.refs.cropper === undefinied
+    setTimeout(() => {
+      const cropper = this.refs.cropper
+      if (imageMetadata) cropper.setCropBoxData(JSON.parse(imageMetadata))
+    }, 100)
   }
 
   hideCropperTool () {
@@ -63,16 +79,22 @@ export default class Medias extends Component {
         <ModalBody>
           <Cropper
             ref='cropper'
-            src={`/files/${this.state.cropperSrc}`}
+            src={this.state.cropperSrc}
             style={{height: 400, width: '100%'}}
             // Cropper.js options
             aspectRatio={this.state.cropperAspectRatio}
             guides={this.state.cropperGuides}
-            crop={this.crop.bind(this)} />
+            rotatable={false}
+            scalable={false}
+            zoomable={this.state.cropperZoomable}
+            // zoomOnTouch={this.state.cropperZoomable}
+            // zoomOnWheel={this.state.cropperZoomable}
+            // wheelZoomRatio={this.state.cropperZoomable}
+            crop={this.dumbCrop.bind(this)} />
         </ModalBody>
 
         <ModalFooter>
-          <Button className='btn-success'>Crop</Button>
+          <Button onClick={this.onCrop.bind(this)} className='btn-success'>Crop</Button>
           <Button onClick={this.hideCropperTool.bind(this)}>Close</Button>
         </ModalFooter>
       </Modal>

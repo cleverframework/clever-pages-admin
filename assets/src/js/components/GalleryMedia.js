@@ -54,6 +54,11 @@ export default class GalleryMedia extends Media {
     })
   }
 
+  onShowCropTool (imageId, imageSrc, imageCaption, imageMetadata) {
+    const { id, onShowCropTool } = this.props
+    onShowCropTool(id, imageId, imageSrc, imageCaption, imageMetadata)
+  }
+
   render () {
     const {
       id, reference, name, imageFiles,
@@ -118,7 +123,7 @@ export default class GalleryMedia extends Media {
                     images={imageFiles}
                     onSort={onSort}
                     onUpdateImage={this.updateImage.bind(this)}
-                    onShowCropTool={onShowCropTool}
+                    onShowCropTool={this.onShowCropTool.bind(this)}
                     onDeleteImage={this.deleteImage.bind(this)} />}
                 <br />
                 <Uploader

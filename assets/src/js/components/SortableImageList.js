@@ -40,6 +40,7 @@ export default class SortableImageList extends Component {
           id={image.id}
           caption={image.caption}
           filename={image.filename}
+          metadata={image.metadata}
           onShowCropTool={onShowCropTool}
           onUpdate={onUpdateImage}
           onDelete={onDeleteImage} />

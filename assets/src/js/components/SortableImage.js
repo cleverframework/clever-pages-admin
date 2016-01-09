@@ -24,8 +24,9 @@ export default class SortableImageList extends Component {
   }
 
   onShowCropTool () {
-    const { id, filename, caption, onShowCropTool } = this.props
-    onShowCropTool(id, filename, caption)
+    const { id, filename, caption, metadata, onShowCropTool } = this.props
+    console.log(metadata)
+    onShowCropTool(id, filename, caption, metadata)
   }
 
   render () {
@@ -90,6 +91,7 @@ SortableImageList.propTypes = {
   id: PropTypes.number.isRequired,
   filename: PropTypes.string,
   caption: PropTypes.string,
+  metadata: PropTypes.string,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onShowCropTool: PropTypes.func.isRequired

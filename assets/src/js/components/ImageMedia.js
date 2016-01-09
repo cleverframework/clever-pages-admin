@@ -42,14 +42,12 @@ export default class ImageMedia extends Media {
   }
 
   onShowCropTool () {
-    const { caption, imageFile, onShowCropTool } = this.props
-    onShowCropTool(imageFile.id, imageFile.filename, caption)
+    const { id, imageFile, onShowCropTool } = this.props
+    onShowCropTool(id, imageFile.id, imageFile.filename, this.refs.caption.value, imageFile.metadata)
   }
 
   render () {
-    const {
-      id, reference, caption, imageFile
-    } = this.props
+    const { id, reference, caption, imageFile } = this.props
 
     const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
     const title = `${this.type} [${ref}]`
@@ -58,9 +56,13 @@ export default class ImageMedia extends Media {
       <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
     )
 
-    const tooltipCrop = (
-      <Tooltip id={`tooltip-crop-gallery-image-${imageFile.id}`}>Crop</Tooltip>
-    )
+    let tooltipCrop = null
+
+    if (imageFile) {
+      tooltipCrop = (
+        <Tooltip id={`tooltip-crop-gallery-image-${imageFile.id}`}>Crop</Tooltip>
+      )
+    }
 
     return (
       <div className='row'>
