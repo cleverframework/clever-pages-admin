@@ -77,8 +77,16 @@ export function createMedia (pageId, type) {
     const n = addNotification.call(NotificationSystem, 'Creating', 'info')
     dispatch(createMediaRequest())
     Request.post(`${PAGES_URL}/${pageId}/medias`, { type })
-      .then(json => dispatch(createMediaSuccess(json)))
-      .catch(err => dispatch(createMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Created', 'success', 3)
+        dispatch(createMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(createMediaFailure(err))
+      })
   }
 }
 
@@ -100,8 +108,16 @@ export function updateMedia (pageId, mediaId, params) {
     const n = addNotification.call(NotificationSystem, 'Updating', 'info')
     dispatch(updateMediaRequest(mediaId))
     Request.put(`${PAGES_URL}/${pageId}/medias/${mediaId}`, params)
-      .then(json => dispatch(updateMediaSuccess(json)))
-      .catch(err => dispatch(updateMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Updated', 'success', 3)
+        dispatch(updateMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(updateMediaFailure(err))
+      })
   }
 }
 
@@ -122,8 +138,16 @@ export function deleteMedia (pageId, mediaId) {
     const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deleteMediaRequest(mediaId))
     Request.delete(`${PAGES_URL}/${pageId}/medias/${mediaId}`)
-      .then(json => dispatch(deleteMediaSuccess(json)))
-      .catch(err => dispatch(deleteMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Uploaded', 'success', 3)
+        dispatch(deleteMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(deleteMediaFailure(err))
+      })
   }
 }
 
@@ -139,15 +163,23 @@ function uploadFileMediaFailure (error) {
   return { type: types.UPLOAD_FILE_MEDIA_FAILURE, error }
 }
 
-export function uploadFileMedia (pageId, mediaId, file) {
+export function uploadFileMedia (NotificationSystem, pageId, mediaId, file) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Uploading', 'info')
     dispatch(uploadFileMediaRequest(mediaId))
     const data = new window.FormData()
     data.append('file', file)
     Request.upload(`${PAGES_URL}/${pageId}/medias/${mediaId}/files`, null, data)
-      .then(json => dispatch(uploadFileMediaSuccess(json)))
-      .catch(err => dispatch(uploadFileMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Uploaded', 'success', 3)
+        dispatch(uploadFileMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(uploadFileMediaFailure(err))
+      })
   }
 }
 
@@ -163,12 +195,21 @@ function updateFileMediaFailure (error) {
   return { type: types.UPDATE_FILE_MEDIA_FAILURE, error }
 }
 
-export function updateFileMedia (pageId, mediaId, fileId, params) {
+export function updateFileMedia (NotificationSystem, pageId, mediaId, fileId, params) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Updating', 'info')
     dispatch(updateFileMediaRequest(mediaId, fileId))
     Request.put(`${PAGES_URL}/${pageId}/medias/${mediaId}/files/${fileId}`, params)
-      .then(json => dispatch(updateFileMediaSucess(json)))
-      .catch(err => dispatch(updateFileMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Updated', 'success', 3)
+        dispatch(updateFileMediaSucess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(updateFileMediaFailure(err))
+      })
   }
 }
 
@@ -184,12 +225,21 @@ function deleteFileMediaFailure (error) {
   return { type: types.DELETE_FILE_MEDIA_FAILURE, error }
 }
 
-export function deleteFileMedia (pageId, mediaId, fileId, params) {
+export function deleteFileMedia (NotificationSystem, pageId, mediaId, fileId, params) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deleteFileMediaRequest(mediaId, fileId))
     Request.delete(`${PAGES_URL}/${pageId}/medias/${mediaId}/files/${fileId}`, params)
-      .then(json => dispatch(deleteFileMediaSuccess(json)))
-      .catch(err => dispatch(deleteFileMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Deleted', 'success', 3)
+        dispatch(deleteFileMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(deleteFileMediaFailure(err))
+      })
   }
 }
 
@@ -210,8 +260,16 @@ export function sortGalleryMedia (NotificationSystem, pageId, mediaId, sortedIds
     const n = addNotification.call(NotificationSystem, 'Sorting', 'info')
     dispatch(sortGalleryMediaRequest(mediaId))
     Request.put(`${PAGES_URL}/${pageId}/medias/${mediaId}/files/sort`, { sortedIds })
-      .then(json => dispatch(sortGalleryMediaSuccess(json)))
-      .catch(err => dispatch(sortGalleryMediaFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Sorted', 'success', 3)
+        dispatch(sortGalleryMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(sortGalleryMediaFailure(err))
+      })
   }
 }
 
