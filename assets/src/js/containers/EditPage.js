@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import NotificationSystem from 'react-notification-system'
 import actions from '../actions'
 import Header from '../components/Header'
 import Medias from '../components/Medias'
@@ -24,59 +25,61 @@ const {
 class EditPage extends Component {
   constructor (props) {
     super(props)
+    this._notificationSystem = null
   }
 
   componentDidMount () {
     const { dispatch, params } = this.props
     const { pageid } = params
+    this._notificationSystem = this.refs.notificationSystem
     dispatch(fetchPage(pageid))
   }
 
   onUpdateHeader (params) {
     const { id, dispatch } = this.props
-    dispatch(updateHeader(id, params))
+    dispatch(updateHeader(this._notificationSystem, id, params))
   }
 
   onCreateMedia (type) {
     const { id, dispatch } = this.props
-    dispatch(createMedia(id, type))
+    dispatch(createMedia(this._notificationSystem, id, type))
   }
 
   onUpdateMedia (mediaId, params) {
     // id -> idPage
     const { dispatch, id } = this.props
-    dispatch(updateMedia(id, mediaId, params))
+    dispatch(updateMedia(this._notificationSystem, id, mediaId, params))
   }
 
   onDeleteMedia (mediaId) {
     const { id, dispatch } = this.props
-    dispatch(deleteMedia(id, mediaId))
+    dispatch(deleteMedia(this._notificationSystem, id, mediaId))
   }
 
   onUploadFileMedia (mediaId, file) {
     // id -> idPage
     const { dispatch, id } = this.props
-    dispatch(uploadFileMedia(id, mediaId, file))
+    dispatch(uploadFileMedia(this._notificationSystem, id, mediaId, file))
   }
 
   onUpdateFileMedia (mediaId, fileId, params) {
     const { dispatch, id } = this.props
-    dispatch(updateFileMedia(id, mediaId, fileId, params))
+    dispatch(updateFileMedia(this._notificationSystem, id, mediaId, fileId, params))
   }
 
   onDeleteFileMedia (mediaId, fileId) {
     const { dispatch, id } = this.props
-    dispatch(deleteFileMedia(id, mediaId, fileId))
+    dispatch(deleteFileMedia(this._notificationSystem, id, mediaId, fileId))
   }
 
   onSortGalleryMedia (mediaId, sortedIds) {
     const { id, dispatch } = this.props
-    dispatch(sortGalleryMedia(id, mediaId, sortedIds))
+    dispatch(sortGalleryMedia(this._notificationSystem, id, mediaId, sortedIds))
   }
 
   onBumpVersion () {
     const { id, dispatch } = this.props
-    dispatch(bumpVersion(id))
+    dispatch(bumpVersion(this._notificationSystem, id))
   }
 
   render () {
@@ -88,6 +91,7 @@ class EditPage extends Component {
 
     return (
       <div className='row'>
+        <NotificationSystem ref='notificationSystem' />
 
         <div className="col-sm-8">
 

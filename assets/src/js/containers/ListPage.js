@@ -24,17 +24,17 @@ class ListPage extends Component {
 
   onTogglePublish (pageId, published) {
     const { dispatch } = this.props
-    dispatch(togglePublish(pageId, published))
+    dispatch(togglePublish(this._notificationSystem, pageId, published))
   }
 
   onDelete (pageId) {
     const { dispatch } = this.props
-    dispatch(deletePage(pageId, this._notificationSystem))
+    dispatch(deletePage(this._notificationSystem, pageId))
   }
 
   onCreate (name) {
     const { dispatch } = this.props
-    dispatch(createPage(name))
+    dispatch(createPage(this._notificationSystem, name))
   }
 
   componentDidMount () {

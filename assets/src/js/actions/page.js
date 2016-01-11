@@ -3,6 +3,7 @@
 import { Request } from '../middlewares/api'
 import * as types from '../constants/ActionTypes'
 import { PAGES_URL, QUERY_LANG } from '../constants/URLs'
+import { addNotification, removeNotification } from '../helpers'
 
 function fetchPageRequest (id) {
   return { type: types.FETCH_PAGE_REQUEST, id }
@@ -37,12 +38,21 @@ function updateHeaderFailure (error) {
   return { type: types.UPDATE_HEADER_FAILURE, error }
 }
 
-export function updateHeader (id, headerParams) {
+export function updateHeader (NotificationSystem, id, headerParams) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Updating', 'info')
     dispatch(updateHeaderRequest(id))
     Request.put(`${PAGES_URL}/${id}?lang=${QUERY_LANG}`, headerParams)
-      .then(json => dispatch(updateHeaderSuccess(json)))
-      .catch(err => dispatch(updateHeaderFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Updated', 'success', 3)
+        dispatch(updateHeaderSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(updateHeaderFailure(err))
+      })
   }
 }
 
@@ -64,6 +74,7 @@ function createMediaFailure (error) {
 
 export function createMedia (pageId, type) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Creating', 'info')
     dispatch(createMediaRequest())
     Request.post(`${PAGES_URL}/${pageId}/medias`, { type })
       .then(json => dispatch(createMediaSuccess(json)))
@@ -86,6 +97,7 @@ function updateMediaFailure (error) {
 // TODO: need to implement related reducer code
 export function updateMedia (pageId, mediaId, params) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Updating', 'info')
     dispatch(updateMediaRequest(mediaId))
     Request.put(`${PAGES_URL}/${pageId}/medias/${mediaId}`, params)
       .then(json => dispatch(updateMediaSuccess(json)))
@@ -107,6 +119,7 @@ function deleteMediaFailure (error) {
 
 export function deleteMedia (pageId, mediaId) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deleteMediaRequest(mediaId))
     Request.delete(`${PAGES_URL}/${pageId}/medias/${mediaId}`)
       .then(json => dispatch(deleteMediaSuccess(json)))
@@ -128,6 +141,7 @@ function uploadFileMediaFailure (error) {
 
 export function uploadFileMedia (pageId, mediaId, file) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Uploading', 'info')
     dispatch(uploadFileMediaRequest(mediaId))
     const data = new window.FormData()
     data.append('file', file)
@@ -191,8 +205,9 @@ function sortGalleryMediaFailure (error) {
   return { type: types.SORT_GALLERY_MEDIA_FAILURE, error }
 }
 
-export function sortGalleryMedia (pageId, mediaId, sortedIds) {
+export function sortGalleryMedia (NotificationSystem, pageId, mediaId, sortedIds) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Sorting', 'info')
     dispatch(sortGalleryMediaRequest(mediaId))
     Request.put(`${PAGES_URL}/${pageId}/medias/${mediaId}/files/sort`, { sortedIds })
       .then(json => dispatch(sortGalleryMediaSuccess(json)))
@@ -212,11 +227,20 @@ function bumpVersionFailure (error) {
   return { type: types.BUMP_VERSION_FAILURE, error }
 }
 
-export function bumpVersion (pageId) {
+export function bumpVersion (NotificationSystem, pageId) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Saving', 'info')
     dispatch(bumpVersionRequest(pageId))
     Request.post(`${PAGES_URL}/${pageId}/bump-version`)
-      .then(json => dispatch(bumpVersionSuccess(json)))
-      .catch(err => dispatch(bumpVersionFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Saved', 'success', 3)
+        dispatch(bumpVersionSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(bumpVersionFailure(err))
+      })
   }
 }

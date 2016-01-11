@@ -3,35 +3,7 @@
 import { Request } from '../middlewares/api'
 import * as types from '../constants/ActionTypes'
 import { PAGES_URL } from '../constants/URLs'
-
-// Helpers
-function addNotification (title, level, autoDismiss) {
-  let message = 'Please don\'t refresh the page.'
-  switch (level) {
-    case 'error':
-      message: 'Oops! Something went wrong.'
-      break
-    case 'success':
-      message: 'Awesome! Everything went smooth.'
-      break
-    default:
-      // something ?
-  }
-
-  return this.addNotification({
-    title,
-    message,
-    level,
-    dismissible: false,
-    autoDismiss: autoDismiss || 0
-  })
-}
-
-function removeNotification (notification) {
-  setTimeout(() => {
-    this.removeNotification(notification)
-  }, 1500)
-}
+import { addNotification, removeNotification } from '../helpers'
 
 // Actions
 function requestPages () {
@@ -68,12 +40,21 @@ function createPageFailure (error) {
   return { type: types.CREATE_PAGE_FAILURE, error }
 }
 
-export function createPage (name) {
+export function createPage (NotificationSystem, name) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Creating', 'info')
     dispatch(createPageRequest(name))
     Request.post(PAGES_URL, { name })
-      .then(json => dispatch(createPageSuccess(json)))
-      .catch(err => dispatch(createPageFailure(err)))
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Created', 'success', 3)
+        dispatch(createPageSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(createPageFailure(err))
+      })
   }
 }
 
@@ -89,12 +70,21 @@ function togglePublishFailure (error) {
   return { type: types.TOGGLE_PUBLISH_FAILURE, error }
 }
 
-export function togglePublish (id, published) {
+export function togglePublish (NotificationSystem, id, published) {
   return dispatch => {
+    const n = addNotification.call(NotificationSystem, published ? 'Publishing' : 'Unpublishing', 'info')
     dispatch(togglePublishRequest(id))
     Request.put(`${PAGES_URL}/${id}`, { published })
-      .then(json => dispatch(togglePublishSuccess(json)))
-      .catch(err => dispatch(togglePublishFailure(err)))
+    .then(json => {
+      removeNotification.call(NotificationSystem, n)
+      addNotification.call(NotificationSystem, published ? 'Published' : 'Unpublished', 'success', 3)
+      dispatch(togglePublishSuccess(json))
+    })
+    .catch(err => {
+      removeNotification.call(NotificationSystem, n)
+      addNotification.call(NotificationSystem, 'Error', 'error', 3)
+      dispatch(togglePublishFailure(err))
+    })
   }
 }
 
@@ -110,7 +100,7 @@ function deletePageFailure (error) {
   return { type: types.DELETE_PAGE_FAILURE, error }
 }
 
-export function deletePage (id, NotificationSystem) {
+export function deletePage (NotificationSystem, id) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deletePageRequest(id))
