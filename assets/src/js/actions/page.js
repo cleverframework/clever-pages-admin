@@ -72,7 +72,7 @@ function createMediaFailure (error) {
   return { type: types.CREATE_MEDIA_FAILURE, error }
 }
 
-export function createMedia (pageId, type) {
+export function createMedia (NotificationSystem, pageId, type) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Creating', 'info')
     dispatch(createMediaRequest())
@@ -103,7 +103,7 @@ function updateMediaFailure (error) {
 }
 
 // TODO: need to implement related reducer code
-export function updateMedia (pageId, mediaId, params) {
+export function updateMedia (NotificationSystem, pageId, mediaId, params) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Updating', 'info')
     dispatch(updateMediaRequest(mediaId))
@@ -133,7 +133,7 @@ function deleteMediaFailure (error) {
   return { type: types.DELETE_MEDIA_FAILURE, error }
 }
 
-export function deleteMedia (pageId, mediaId) {
+export function deleteMedia (NotificationSystem, pageId, mediaId) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
     dispatch(deleteMediaRequest(mediaId))
