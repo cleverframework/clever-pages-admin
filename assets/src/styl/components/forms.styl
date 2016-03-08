@@ -1,0 +1,103 @@
+.input-group-vertical
+  margin-bottom: 10px
+  .form-control
+    border-radius: 0
+
+  .form-group, .form-group-half
+    margin-bottom: 0
+
+  .form-group-half .form-control:not(:focus)
+    border-bottom-color: transparent
+
+  .form-group-half:first-child .form-control
+    border-top-left-radius: 3px
+
+  .form-group-half:nth-child(2) .form-control
+    border-top-right-radius: 3px
+    border-left: 0
+
+  .form-group:last-child .form-control
+    border-bottom-right-radius: 3px
+    border-bottom-left-radius: 3px
+    top: -2px
+
+
+.add-media-block
+  margin: 0 auto
+  position: relative
+  top: 30px
+  display: block
+  text-align: center
+  > .btn
+    float: none
+    display:inline-block
+
+.panel-field-group
+  margin-bottom: 40px
+
+.medias
+  min-height: 100px
+
+.panel-drag
+  cursor: move
+
+.image-container
+  position: relative
+  width: 100%
+  height: 170px
+  img
+    object-fit: cover
+    width: 100%
+    height: 100%
+
+.image-btn-container
+  position: absolute
+  bottom: 10px
+  right: 10px
+
+.form-group-half
+  display: inline-block
+  width: 50%
+
+
+.tgl
+  display: none
+  &, &:after, &:before, & *, & *:after, & *:before, & + .tgl-btn
+    box-sizing: border-box
+    &::selection
+      background: none
+
+.tgl + .tgl-btn
+  outline: 0
+  display: block
+  width: 4em
+  height: 2em
+  position: relative
+  cursor: pointer
+  user-select: none
+  &:after, &:before
+    position: relative
+    display: block
+    content: ""
+    width: 50%
+    height: 100%
+  &:after
+    left: 0
+  &:before
+    display: none
+
+.tgl:checked + .tgl-btn:after
+  left: 50%
+
+.tgl-light + .tgl-btn
+  background: #d9534f
+  border-radius: 2em
+  padding: 2px
+  transition: all .4s ease
+  &:after
+    border-radius: 50%
+    background: #fff
+    transition: all .2s ease
+
+.tgl-light:checked + .tgl-btn
+  background: #9FD6AE

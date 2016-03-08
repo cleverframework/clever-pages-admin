@@ -1,7 +1,7 @@
 extends ./layouts/base
 
 block title
-  title Pages :: Clever V1
+  title Pages :: Winemakers CMS
   
 block content
   section#reactPages
@@ -9,4 +9,7 @@ block content
 // Put here constants, etc etc.. 
 block prejs 
   script.
-    // window.BASE_URL = 'http://somethingcool.com'
+    window.BASE_URL = '#{baseUrl}'
+    window.STORAGE_PUBLIC_URL = '#{storagePublicUrl}'
+    window.SITE_PREVIEW_URL = '#{sitePreviewUrl}'
+    window.USER_ROLE = '#{user.role}'

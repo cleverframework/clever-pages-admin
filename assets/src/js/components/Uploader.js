@@ -33,7 +33,7 @@ export default class Uploader extends Component {
     )
 
     return (
-      <OverlayTrigger placement='right' overlay={tooltipUpload}>
+      <OverlayTrigger placement='top' overlay={tooltipUpload}>
         <span className='btn btn-default btn-file'>
         <FontAwesome
           name='cloud-upload' /> Upload

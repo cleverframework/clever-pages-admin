@@ -8,6 +8,8 @@ import {
   Tooltip, OverlayTrigger
 } from 'react-bootstrap'
 
+import { USER_ROLE } from '../constants/User'
+
 export default class Pages extends Component {
 
   togglePublish () {
@@ -21,7 +23,7 @@ export default class Pages extends Component {
   }
 
   render () {
-    const { id, name, published, deletingPageId } = this.props
+    const { id, slug, name, published, deletingPageId } = this.props
 
     const tooltip = (
       <Tooltip id={`tooltip-${id}`}>{published ? 'Publish' : 'Unpublish'}</Tooltip>
@@ -31,7 +33,6 @@ export default class Pages extends Component {
       <div className='filter-panel'>
         <div className='panel panel-default'>
           <div className='panel-body'>
-            <Link to={`/pages/${id}`}>{name}</Link>&nbsp;
             {published &&
               <OverlayTrigger placement='top' overlay={tooltip}>
                 <FontAwesome
@@ -44,8 +45,9 @@ export default class Pages extends Component {
                   style={{color: 'red'}}
                   name='circle' />
               </OverlayTrigger>}
+            &nbsp;<Link to={`/pages/${slug}`}>{name}</Link>
             <div className='pull-right'>
-              {deletingPageId !== id &&
+              {(USER_ROLE === 'admin' && deletingPageId !== id) &&
                 <DropdownButton bsStyle={'default'} title={'Quick Actions'} id={`dropdown-basic-${id}`}>
                   <MenuItem
                     onSelect={this.togglePublish.bind(this)}>{published ? 'Unpublish' : 'Publish'}

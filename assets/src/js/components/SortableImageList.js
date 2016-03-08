@@ -16,13 +16,13 @@ export default class SortableImageList extends Component {
   }
 
   componentDidMount () {
-    const sortableList = $(`#${this.props.mediaId}`).sortable({
+    const sortableList = $(this.refs.images).sortable({
       placeholder: 'ui-state-highlight',
       stop: (e, ui) => {
         const sortedIds = sortableList.sortable('toArray')
         this.props.onSort(this.props.mediaId, sortedIds)
       }})
-    $('.sortable').disableSelection()
+    // $(`#${this.props.mediaId}`).disableSelection()
   }
 
   render () {
@@ -32,11 +32,11 @@ export default class SortableImageList extends Component {
     } = this.props
 
     bubblesort(images, (a, b) => a.order - b.order)
-
     const list = images.map((image, i) => {
+      const key = i + '' + image.id
       return (
         <SortableImage
-          key={i}
+          key={key}
           id={image.id}
           caption={image.caption}
           filename={image.filename}
@@ -47,7 +47,7 @@ export default class SortableImageList extends Component {
       )
     })
 
-    return <ul id={this.props.mediaId} className={'sortable'}>{list}</ul>
+    return <ul ref='images' className={'sortable'}>{list}</ul>
   }
 }
 

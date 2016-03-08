@@ -8,6 +8,6 @@ import EditPage from './containers/EditPage'
 export default (
   <Router>
     <Route path='/pages' component={ListPage}/>
-    <Route path='/pages/:pageid' component={EditPage}/>
+    <Route path='/pages/:pageslug' component={EditPage}/>
   </Router>
 )
