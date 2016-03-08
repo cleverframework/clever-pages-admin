@@ -16,7 +16,9 @@ function page (state = {
   version: 0.1,
   name: '',
   description: '',
+  slug: '',
   medias: [],
+  groups: [],
   isFetchingPage: false,
   isCreatingMedia: false,
   isUpdatingMedia: false, // missing reducer code
@@ -24,9 +26,16 @@ function page (state = {
   isUploadingFileMedia: false,
   isUpdatingFileMedia: false,
   isDeletingFileMedia: false,
-  isSortingGalleryMedia: false
+  isSortingGalleryMedia: false,
+  isToggling: false,
+  pageNotFound: false,
+  published: false
 }, action) {
   let index = null
+  let groupIndex = null
+  let group = null
+  let mediasInGroup = null
+  let indexInGroup = null
 
   switch (action.type) {
     case types.FETCH_PAGE_REQUEST:
@@ -35,17 +44,21 @@ function page (state = {
       })
     case types.FETCH_PAGE_FAILURE:
       return Object.assign({}, state, {
-        isFetchingPage: false
-        // TODO: show error
+        isFetchingPage: false,
+        pageNotFound: true
       })
     case types.FETCH_PAGE_SUCCESS:
       return Object.assign({}, state, {
         isFetchingPage: false,
+        pageNotFound: false,
         id: action.page.id,
         name: action.page.name,
         version: action.page.version,
         description: action.page.description,
-        medias: action.page.medias
+        slug: action.page.slug,
+        medias: action.page.medias,
+        groups: action.page.groups,
+        published: action.page.published
       })
 
     case types.CREATE_MEDIA_REQUEST:
@@ -59,12 +72,20 @@ function page (state = {
       })
     case types.CREATE_MEDIA_SUCCESS:
       index = findIndex(state.medias, action.media.id)
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias || []
+      group = Object.assign({}, state.groups[groupIndex], {
+        medias: [
+          ...mediasInGroup,
+          Object.assign({}, action.media, {order: mediasInGroup.length + 1})
+        ]
+      })
       return Object.assign({}, state, {
         isCreatingMedia: false,
-        medias: [
-          ...state.medias.slice(0, index),
-          action.media,
-          ...state.medias.slice(index + 1)
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -81,11 +102,41 @@ function page (state = {
       })
     case types.DELETE_MEDIA_SUCCESS:
       index = findIndex(state.medias, action.media.id)
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias
+      indexInGroup = findIndex(mediasInGroup, action.media.id)
+      group = Object.assign({}, state.groups[groupIndex], {
+        medias: [
+          ...mediasInGroup.slice(0, indexInGroup),
+          ...mediasInGroup.slice(indexInGroup + 1)
+        ]
+      })
       return Object.assign({}, state, {
         isDeletingMedia: false,
-        medias: [
-          ...state.medias.slice(0, index),
-          ...state.medias.slice(index + 1)
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
+        ]
+      })
+
+    case types.SORT_MEDIA_REQUEST:
+      return Object.assign({}, state, {
+        isSortingMedia: true
+      })
+    case types.SORT_MEDIA_FAILURE:
+      // SHOULD SHOW AN ERROR VIA AN ERROR COMPONENT
+      return Object.assign({}, state, {
+        isSortingMedia: false
+      })
+    case types.SORT_MEDIA_SUCCESS:
+      groupIndex = findIndex(state.groups, action.group.id)
+      return Object.assign({}, state, {
+        isSortingMedia: false,
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          action.group,
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -99,13 +150,22 @@ function page (state = {
         isUploadingFileMedia: false
       })
     case types.UPLOAD_FILE_MEDIA_SUCCESS:
-      index = findIndex(state.medias, action.media.id)
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias || []
+      index = findIndex(mediasInGroup, action.media.id)
+      group = Object.assign({}, state.groups[groupIndex], {
+        medias: [
+          ...mediasInGroup.slice(0, index),
+          Object.assign({}, action.media),
+          ...mediasInGroup.slice(index + 1)
+        ]
+      })
       return Object.assign({}, state, {
         isUploadingFileMedia: false,
-        medias: [
-          ...state.medias.slice(0, index),
-          action.media,
-          ...state.medias.slice(index + 1)
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -119,13 +179,22 @@ function page (state = {
         isUpdatingFileMedia: false
       })
     case types.UPDATE_FILE_MEDIA_SUCCESS:
-      index = findIndex(state.medias, action.media.id)
-      return Object.assign({}, state, {
-        isUpdatingFileMedia: false,
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias || []
+      index = findIndex(mediasInGroup, action.media.id)
+      group = Object.assign({}, state.groups[groupIndex], {
         medias: [
-          ...state.medias.slice(0, index),
-          action.media,
-          ...state.medias.slice(index + 1)
+          ...mediasInGroup.slice(0, index),
+          Object.assign({}, action.media),
+          ...mediasInGroup.slice(index + 1)
+        ]
+      })
+      return Object.assign({}, state, {
+        isUploadingFileMedia: false,
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -139,13 +208,22 @@ function page (state = {
         isDeletingFileMedia: false
       })
     case types.DELETE_FILE_MEDIA_SUCCESS:
-      index = findIndex(state.medias, action.media.id)
-      return Object.assign({}, state, {
-        isDeletingFileMedia: false,
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias || []
+      index = findIndex(mediasInGroup, action.media.id)
+      group = Object.assign({}, state.groups[groupIndex], {
         medias: [
-          ...state.medias.slice(0, index),
-          action.media,
-          ...state.medias.slice(index + 1)
+          ...mediasInGroup.slice(0, index),
+          Object.assign({}, action.media),
+          ...mediasInGroup.slice(index + 1)
+        ]
+      })
+      return Object.assign({}, state, {
+        isUploadingFileMedia: false,
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -159,13 +237,52 @@ function page (state = {
         isSortingGalleryMedia: false
       })
     case types.SORT_GALLERY_MEDIA_SUCCESS:
-      index = findIndex(state.medias, action.media.id)
-      return Object.assign({}, state, {
-        isSortingGalleryMedia: false,
+      groupIndex = findIndex(state.groups, action.media.group_id)
+      mediasInGroup = state.groups[groupIndex].medias || []
+      index = findIndex(mediasInGroup, action.media.id)
+      group = Object.assign({}, state.groups[groupIndex], {
         medias: [
-          ...state.medias.slice(0, index),
-          action.media,
-          ...state.medias.slice(index + 1)
+          ...mediasInGroup.slice(0, index),
+          Object.assign({}, action.media),
+          ...mediasInGroup.slice(index + 1)
+        ]
+      })
+      return Object.assign({}, state, {
+        isUploadingFileMedia: false,
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          group,
+          ...state.groups.slice(groupIndex + 1)
+        ]
+      })
+
+    // GROUPS
+
+    case types.CREATE_GROUP_REQUEST:
+      return Object.assign({}, state, {
+        isCreatingGroup: true
+      })
+    case types.CREATE_GROUP_FAILURE:
+      // SHOULD SHOW AN ERROR VIA AN ERROR COMPONENT
+      return Object.assign({}, state, {
+        isCreatingGroup: false
+      })
+    case types.CREATE_GROUP_SUCCESS:
+      return Object.assign({}, state, {
+        isCreatingGroup: false,
+        groups: [
+          ...state.groups,
+          action.group
+        ]
+      })
+
+    case types.DELETE_GROUP_SUCCESS:
+      groupIndex = findIndex(state.groups, action.group.id)
+      return Object.assign({}, state, {
+        isDeletingGroup: false,
+        groups: [
+          ...state.groups.slice(0, groupIndex),
+          ...state.groups.slice(groupIndex + 1)
         ]
       })
 
@@ -185,7 +302,24 @@ function page (state = {
         name: action.page.name,
         version: action.page.version,
         description: action.page.description,
-        medias: action.page.medias
+        slug: action.page.slug,
+        medias: action.page.medias,
+        groups: action.page.groups,
+        published: action.page.published
+      })
+
+    case types.TOGGLE_PUBLISH_REQUEST:
+      return Object.assign({}, state, {
+        isToggling: true
+      })
+    case types.TOGGLE_PUBLISH_FAILURE:
+      return Object.assign({}, state, {
+        isToggling: false
+      })
+    case types.TOGGLE_PUBLISH_SUCCESS:
+      return Object.assign({}, state, {
+        isToggling: false,
+        published: action.page.published
       })
 
     // TODO:

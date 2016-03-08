@@ -12,6 +12,7 @@ export default class Pages extends Component {
     const pages = this.props.pages.map((page, i) =>
       <Page key={i}
         id={page.id}
+        slug={page.slug}
         name={page.name || `Page ${page.id}`}
         published={page.published}
         isDeleting={isDeleting}

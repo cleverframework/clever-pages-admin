@@ -5,12 +5,12 @@
   "author": "Jacopo Daeli <jacopo.daeli@gmail.com>",
   "clever": "0.1.x",
   "scripts": {
-    "build": "npm run build-js && npm run build-css",
-    "watch": "npm run watch-js && npm run watch-css",
+    "build": "npm run copy-fonts && npm run build-js && npm run build-css",
+    "watch": "npm run copy-fonts && npm run watch-js && npm run watch-css",
     "build-js": "mkdir -p assets/dist/js && browserify -g browserify-css assets/src/js/index.js | cat > assets/dist/js/index.js",
     "watch-js": "mkdir -p assets/dist/js && watchify -g browserify-css assets/src/js/index.js assets/src/js/index.js -o assets/dist/js/index.js --debug --verbose",
     "watch-css": "mkdir -p assets/dist/css && sourdough -w -v assets/src/styl/index.styl assets/dist/css/index.css",
-    "build-css": "mkdir -p assets/dist/css && sourdough -c assets/src/styl/index.styl assets/dist/css/index.css",
+    "build-css": "mkdir -p assets/dist/css && sourdough assets/src/styl/index.styl assets/dist/css/index.css",
     "copy-fonts": "cp -rf assets/src/fonts assets/dist/fonts"
   },
   "browser": {
@@ -30,7 +30,7 @@
     "attr-accept": "^1.0.3",
     "babel-polyfill": "^6.2.0",
     "bootstrap": "^3.3.6",
-    "bubble-sort-js": "0.0.2",
+    "bubble-sort-js": "0.0.3",
     "font-awesome": "^4.4.0",
     "history": "^1.13.0",
     "isomorphic-fetch": "^2.1.1",
@@ -48,10 +48,13 @@
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
     "react-sortable": "0.0.2",
+    "react-sticky": "^3.0.0",
     "redux": "^3.0.0",
     "redux-logger": "^2.0.2",
     "redux-router": "^1.0.0-beta3",
-    "redux-thunk": "^0.1.0"
+    "redux-thunk": "^0.1.0",
+    "shortid": "^2.2.4",
+    "sourdough-preprocessor": "^1.1.0"
   },
   "devDependencies": {
     "babelify": "^6.1.0",

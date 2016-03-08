@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import NotificationSystem from 'react-notification-system'
 import actions from '../actions'
 import * as PageFilters from '../constants/PageFilters'
+import { USER_ROLE } from '../constants/User'
 import Pages from '../components/Pages'
 import PublishStatusFilter from '../components/PublishStatusFilter'
 import TextSearchFilter from '../components/TextSearchFilter'
@@ -53,64 +54,67 @@ class ListPage extends Component {
     } = this.props
 
     return (
-      <section id='ListPage'>
-        <NotificationSystem ref='notificationSystem' />
-        <div className='row'>
-          <div id='filter-panel' className='filter-panel'>
-            <div className='panel panel-default'>
-              <div className='panel-body'>
-                <form className='form-inline' role='form'>
+      <div className="container">
+        <section id='ListPage'>
+          <NotificationSystem ref='notificationSystem' />
+          <div className='row'>
+            <div id='filter-panel' className='filter-panel'>
+              <div className='panel panel-default'>
+                <div className='panel-body'>
+                  <form className='form-inline' role='form'>
 
-                  <PublishStatusFilter
-                    filter={publishStatusFilter}
-                    onFilterChange={nextFilter =>
-                      dispatch(setPublishStatusFilter(nextFilter))
-                    } />
+                    <PublishStatusFilter
+                      filter={publishStatusFilter}
+                      onFilterChange={nextFilter =>
+                        dispatch(setPublishStatusFilter(nextFilter))
+                      } />
 
-                  <TextSearchFilter
-                    filter={textSearchFilter}
-                    onFilterChange={nextFilter =>
-                      dispatch(setTextSearchFilter(nextFilter))
-                    } />
+                    <TextSearchFilter
+                      filter={textSearchFilter}
+                      onFilterChange={nextFilter =>
+                        dispatch(setTextSearchFilter(nextFilter))
+                      } />
 
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {isFetching && filteredPages.length === 0 &&
-          <div className='row'>
-            <div className='col-xs-12'>
-              <h2>Loading...</h2>
-              <br />
-            </div>
-          </div>
-        }
-        {!isFetching && filteredPages.length === 0 &&
-          <div className='row'>
-            <div className='col-xs-12'>
-              <h2>Empty.</h2>
-              <br />
-            </div>
-          </div>
-        }
-        {filteredPages.length > 0 &&
-          <div className='row' style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <Pages
-              pages={filteredPages}
-              isDeleting={isDeleting}
-              deletingPageId={deletingPageId}
-              onTogglePublish={this.onTogglePublish.bind(this)}
-              onDelete={this.onDelete.bind(this)} />
-          </div>
-        }
+          {USER_ROLE === 'admin' &&
+            <CreateForm
+              inputNameValue={createFormInputNameValue}
+              disabled={isCreating}
+              onCreateClick={this.onCreate.bind(this)} />}
 
-        <CreateForm
-          inputNameValue={createFormInputNameValue}
-          disabled={isCreating}
-          onCreateClick={this.onCreate.bind(this)} />
-      </section>
+          {isFetching && filteredPages.length === 0 &&
+            <div className='row'>
+              <div className='col-xs-12'>
+                <h2>Loading...</h2>
+                <br />
+              </div>
+            </div>
+          }
+          {!isFetching && filteredPages.length === 0 &&
+            <div className='row'>
+              <div className='col-xs-12'>
+                <h2>Empty.</h2>
+                <br />
+              </div>
+            </div>
+          }
+          {filteredPages.length > 0 &&
+            <div className='row' style={{ opacity: isFetching ? 0.5 : 1 }}>
+              <Pages
+                pages={filteredPages}
+                isDeleting={isDeleting}
+                deletingPageId={deletingPageId}
+                onTogglePublish={this.onTogglePublish.bind(this)}
+                onDelete={this.onDelete.bind(this)} />
+            </div>
+          }
+        </section>
+      </div>
     )
   }
 }
