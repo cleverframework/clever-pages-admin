@@ -13,7 +13,7 @@ const config = CleverCore.loadConfig()
 // Check if jwt-cookie exists
 function isLogged(req, res, next) {
   const jwt = req.cookies[config.auth.jwt.cookie]
-  if (!jwt) return res.redirect('/auth')
+  if (!jwt) return res.redirect('/login')
 
   // Decode jwt
   res.locals.user = jwtDecode(jwt)
@@ -28,6 +28,7 @@ module.exports = function(PagesAdminPackage, app, config) {
   // - Check what's best for 404 - maybe using a single router.use ...
 
   router.use(isLogged, (req, res) => {
+    console.log(res.locals)
     res.send(PagesAdminPackage.render('pages', res.locals))
   })
 

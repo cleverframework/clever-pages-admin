@@ -34,7 +34,6 @@ export default class CreateForm extends Component {
     return (
       <div className='row'>
         <form role='form' onSubmit={this.onSubmit.bind(this)}>
-
           <div className='input-group'>
             <input
               type='text'
@@ -52,6 +51,7 @@ export default class CreateForm extends Component {
             </span>
           </div>
         </form>
+        <br />
       </div>
     )
   }

@@ -10,42 +10,37 @@ export default class CreateMediaForm extends Component {
   }
 
   onCreate (type, e) {
-    const { onCreate } = this.props
+    const { onCreate, groupId } = this.props
     e.preventDefault()
-    onCreate(type)
+    onCreate(type, groupId)
   }
 
   renderForm () {
     return (
-      <div className='row'>
-        <div className='row'>
-          <div className='panel panel-default'>
-            <div className='panel-heading'>
-              <h4 className='panel-title'>Add Media</h4>
-            </div>
-            <div className='panel-body'>
-              <div className='btn-group' role='group'>
-                <button
-                  className='btn btn-default'
-                  onClick={this.onCreate.bind(this, MediaTypes.TEXT)}
-                  type='button'>Text</button>
-                <button
-                  className='btn btn-default'
-                  onClick={this.onCreate.bind(this, MediaTypes.IMAGE)}
-                  type='button'>Image</button>
-                <button
-                  className='btn btn-default'
-                  onClick={this.onCreate.bind(this, MediaTypes.GALLERY)}
-                  type='button'>Gallery</button>
-                <button
-                  className='btn btn-default'
-                  onClick={this.onCreate.bind(this, MediaTypes.BUTTON)}
-                  type='button'>Button</button>
-              </div>
-            </div>
-          </div>
-        </div>
+
+      <div className='btn-group add-media-block clearfix' role='group'>
+        <button
+          className='btn btn-default'
+          onClick={this.onCreate.bind(this, MediaTypes.TEXT)}
+          type='button'>Text</button>
+        <button
+          className='btn btn-default'
+          onClick={this.onCreate.bind(this, MediaTypes.IMAGE)}
+          type='button'>Image</button>
+        <button
+          className='btn btn-default'
+          onClick={this.onCreate.bind(this, MediaTypes.GALLERY)}
+          type='button'>Gallery</button>
+        <button
+          className='btn btn-default'
+          onClick={this.onCreate.bind(this, MediaTypes.BUTTON)}
+          type='button'>Link</button>
+        <button
+          className='btn btn-default'
+          onClick={this.onCreate.bind(this, MediaTypes.MAP)}
+          type='button'>Map</button>
       </div>
+
     )
   }
 
@@ -56,5 +51,6 @@ export default class CreateMediaForm extends Component {
 }
 
 CreateMediaForm.propTypes = {
-  onCreate: PropTypes.func.isRequired
+  onCreate: PropTypes.func.isRequired,
+  groupId: PropTypes.number.isRequired
 }

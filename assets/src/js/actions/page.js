@@ -17,12 +17,12 @@ function fetchPageFailure (error) {
   return { type: types.FETCH_PAGE_FAILURE, error }
 }
 
-export function fetchPage (id) {
+export function fetchPage (slug) {
   return dispatch => {
-    dispatch(fetchPageRequest(id))
-    Request.get(`${PAGES_URL}/${id}?lang=${QUERY_LANG}`)
+    dispatch(fetchPageRequest(slug))
+    Request.get(`${PAGES_URL}/${slug}?lang=${QUERY_LANG}`)
       .then(json => dispatch(fetchPageSuccess(json)))
-      .catch(err => fetchPageFailure(err))
+      .catch(err => dispatch(fetchPageFailure(err)))
   }
 }
 
@@ -72,11 +72,11 @@ function createMediaFailure (error) {
   return { type: types.CREATE_MEDIA_FAILURE, error }
 }
 
-export function createMedia (NotificationSystem, pageId, type) {
+export function createMedia (NotificationSystem, pageId, type, group_id, order) {
   return dispatch => {
     const n = addNotification.call(NotificationSystem, 'Creating', 'info')
     dispatch(createMediaRequest())
-    Request.post(`${PAGES_URL}/${pageId}/medias`, { type })
+    Request.post(`${PAGES_URL}/${pageId}/medias`, { type, group_id, order })
       .then(json => {
         removeNotification.call(NotificationSystem, n)
         addNotification.call(NotificationSystem, 'Created', 'success', 3)
@@ -147,6 +147,36 @@ export function deleteMedia (NotificationSystem, pageId, mediaId) {
         removeNotification.call(NotificationSystem, n)
         addNotification.call(NotificationSystem, 'Error', 'error', 3)
         dispatch(deleteMediaFailure(err))
+      })
+  }
+}
+
+function sortMediaRequest (groupId) {
+  return { type: types.SORT_MEDIA_REQUEST, groupId }
+}
+
+function sortMediaSuccess (json) {
+  return { type: types.SORT_MEDIA_SUCCESS, group: json }
+}
+
+function sortMediaFailure (error) {
+  return { type: types.SORT_MEDIA_FAILURE, error }
+}
+
+export function sortMedia (NotificationSystem, pageId, groupId, sortedIds) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Sorting', 'info')
+    dispatch(sortMediaRequest(groupId))
+    Request.put(`${PAGES_URL}/${pageId}/groups/${groupId}/medias/sort`, { sortedIds })
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Sorted', 'success', 3)
+        dispatch(sortMediaSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(sortMediaFailure(err))
       })
   }
 }
@@ -273,6 +303,135 @@ export function sortGalleryMedia (NotificationSystem, pageId, mediaId, sortedIds
   }
 }
 
+/*
+ * EDIT PAGE (GROUPS)
+ */
+
+function createGroupRequest () {
+  return { type: types.CREATE_GROUP_REQUEST }
+}
+
+function createGroupSuccess (json) {
+  return { type: types.CREATE_GROUP_SUCCESS, group: json }
+}
+
+function createGroupFailure (error) {
+  return { type: types.CREATE_GROUP_FAILURE, error }
+}
+
+export function createGroup (NotificationSystem, pageId, order) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Creating', 'info')
+    dispatch(createGroupRequest())
+    Request.post(`${PAGES_URL}/${pageId}/groups`, { order })
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Created', 'success', 3)
+        dispatch(createGroupSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        console.log('why here', err)
+        dispatch(createGroupFailure(err))
+      })
+  }
+}
+
+function deleteGroupRequest (groupId) {
+  return { type: types.DELETE_GROUP_REQUEST, groupId }
+}
+
+function deleteGroupSuccess (json) {
+  return { type: types.DELETE_GROUP_SUCCESS, group: json }
+}
+
+function deleteGroupFailure (error) {
+  return { type: types.DELETE_GROUP_FAILURE, error }
+}
+
+export function deleteGroup (NotificationSystem, pageId, groupId) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Deleting', 'info')
+    dispatch(deleteGroupRequest(groupId))
+    Request.delete(`${PAGES_URL}/${pageId}/groups/${groupId}`)
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Uploaded', 'success', 3)
+        dispatch(deleteGroupSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(deleteGroupFailure(err))
+      })
+  }
+}
+
+function updateGroupRequest (groupId) {
+  return { type: types.UPDATE_GROUP_REQUEST, groupId }
+}
+
+function updateGroupSuccess (json) {
+  return { type: types.UPDATE_GROUP_SUCCESS, group: json }
+}
+
+function updateGroupFailure (error) {
+  return { type: types.UPDATE_GROUP_FAILURE, error }
+}
+
+export function updateGroup (NotificationSystem, pageId, groupId, params) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Updating', 'info')
+    dispatch(updateGroupRequest(groupId))
+    Request.put(`${PAGES_URL}/${pageId}/groups/${groupId}`, params)
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Updated', 'success', 3)
+        dispatch(updateGroupSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(updateGroupFailure(err))
+      })
+  }
+}
+
+function sortGroupRequest () {
+  return { type: types.SORT_GROUP_REQUEST }
+}
+
+function sortGroupSuccess (json) {
+  return { type: types.SORT_GROUP_SUCCESS, group: json }
+}
+
+function sortGroupFailure (error) {
+  return { type: types.SORT_GROUP_FAILURE, error }
+}
+
+export function sortGroup (NotificationSystem, pageId, sortedIds) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, 'Sorting', 'info')
+    dispatch(sortGroupRequest())
+    Request.put(`${PAGES_URL}/${pageId}/groups/sort`, { sortedIds, pageId })
+      .then(json => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Sorted', 'success', 3)
+        dispatch(sortGroupSuccess(json))
+      })
+      .catch(err => {
+        removeNotification.call(NotificationSystem, n)
+        addNotification.call(NotificationSystem, 'Error', 'error', 3)
+        dispatch(sortGroupFailure(err))
+      })
+  }
+}
+
+/*
+ * EDIT PAGE (VERSIONS)
+ */
+
 function bumpVersionRequest (pageId) {
   return { type: types.BUMP_VERSION_REQUEST, pageId }
 }
@@ -300,5 +459,37 @@ export function bumpVersion (NotificationSystem, pageId) {
         addNotification.call(NotificationSystem, 'Error', 'error', 3)
         dispatch(bumpVersionFailure(err))
       })
+  }
+}
+
+/* EDIT PAGE STATUS */
+
+function togglePublishRequest (id) {
+  return { type: types.TOGGLE_PUBLISH_REQUEST, id }
+}
+
+function togglePublishSuccess (json) {
+  return { type: types.TOGGLE_PUBLISH_SUCCESS, page: json }
+}
+
+function togglePublishFailure (error) {
+  return { type: types.TOGGLE_PUBLISH_FAILURE, error }
+}
+
+export function statusChange (NotificationSystem, id, published) {
+  return dispatch => {
+    const n = addNotification.call(NotificationSystem, published ? 'Publishing' : 'Unpublishing', 'info')
+    dispatch(togglePublishRequest(id))
+    Request.put(`${PAGES_URL}/${id}`, { published })
+    .then(json => {
+      removeNotification.call(NotificationSystem, n)
+      addNotification.call(NotificationSystem, published ? 'Published' : 'Unpublished', 'success', 3)
+      dispatch(togglePublishSuccess(json))
+    })
+    .catch(err => {
+      removeNotification.call(NotificationSystem, n)
+      addNotification.call(NotificationSystem, 'Error', 'error', 3)
+      dispatch(togglePublishFailure(err))
+    })
   }
 }

@@ -3,17 +3,34 @@
 import React, { Component, PropTypes } from 'react'
 import FontAwesome from 'react-fontawesome'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { STORAGE_PUBLIC_URL } from '../constants/URLs'
 
-export default class SortableImageList extends Component {
+export default class SortableImage extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      caption: this.props.caption,
+    }
+    this.prevState = this.state
   }
 
-  update (e) {
-    e.preventDefault()
+  onBlur(e) {
     const { id, onUpdate } = this.props
+    e.preventDefault()
+
+    // Avoid empty update
+    if (this.prevState === this.state) return
+    this.prevState = this.state
+
     onUpdate(id, {
       caption: this.refs.caption.value
+    })
+  }
+
+  onCaptionChange(e) {
+    e.preventDefault()
+    this.setState({
+      caption: e.target.value
     })
   }
 
@@ -41,7 +58,7 @@ export default class SortableImageList extends Component {
     )
 
     const styleListElement = {
-      backgroundImage: `url(/files/${filename})`,
+      backgroundImage: `url(${STORAGE_PUBLIC_URL}/${filename})`,
       width: '100%',
       height: '64px',
       display: 'block',
@@ -52,15 +69,16 @@ export default class SortableImageList extends Component {
 
     return (
       <li id={this.props.id}
-        className='ui-state-default'
+        className='ui-state-default panel-drag'
         style={styleListElement}>
         <input
-          defaultValue={caption}
+          value={this.state.caption}
           type='text'
           ref='caption'
           placeholder='Caption'
           className='form-control gallery-image-input-caption'
-          onBlur={this.update.bind(this)} />
+          onBlur={this.onBlur.bind(this)}
+          onChange={this.onCaptionChange.bind(this)} />
         <OverlayTrigger placement='top' overlay={tooltipCrop}>
           <button
             className='btn btn-default'
@@ -87,7 +105,7 @@ export default class SortableImageList extends Component {
   }
 }
 
-SortableImageList.propTypes = {
+SortableImage.propTypes = {
   id: PropTypes.number.isRequired,
   filename: PropTypes.string,
   caption: PropTypes.string,

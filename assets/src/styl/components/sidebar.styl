@@ -1,0 +1,64 @@
+.sidebar
+  position: fixed
+  left: 0
+  top: 80px
+  width: 200px
+  bottom: 0
+  background-color: white
+  border-right: 1px solid #e1e1e1
+  overflow-y: auto
+  padding-top: 10px
+
+.list-content
+  padding-left: 230px
+
+.sidebar__ul--root
+  a
+    display: block
+    width: 100%
+    height: 100%
+    &:hover, &:focus
+      text-decoration: none
+
+.sidebar__ul--root,
+.sidebar__ul--sub-root,
+.sidebar__ul--sub-sub-ul
+  list-style:none
+  padding-left:0
+  ul
+    list-style:none
+
+.home-link
+  border-bottom: 1px solid #E1E1E1
+  a
+    padding:15px
+    &:hover
+      color:white
+      background-color: #3366cc
+
+.sidebar__ul--sub-root
+  li a
+    padding: 15px 20px
+    border-bottom: 1px solid #E1E1E1
+    &:hover
+      color:white
+      background-color: #3366cc
+
+.sidebar__ul--sub-sub-ul
+  li a
+    padding-left: 30px
+
+.sidebar__li--sub-root-link a
+  background-color: #EBEBEB
+  padding-left: 30px
+
+.sticky
+  position: fixed
+  top: 100px
+  right: 15px
+  left: calc(70px + 66.666667%)
+  > .col-sm-4
+    width: 100%
+
+.panel-sidebar
+  border: 0

@@ -6,6 +6,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import Media from './Media'
 import SortableImageList from './SortableImageList'
 import Uploader from './Uploader'
+import { USER_ROLE } from '../constants/User'
 
 // Extends Media class
 export default class GalleryMedia extends Media {
@@ -13,8 +14,10 @@ export default class GalleryMedia extends Media {
   constructor (props) {
     super(props)
     this.state = {
-      reference: props.reference
+      reference: props.reference,
+      name: props.name
     }
+    this.prevState = this.state
     this.type = 'Gallery'
     this.multiple = true // TODO: verify multiupload works fine
     this.accept = '.jpg,.jpeg,.png,.gif'
@@ -25,6 +28,11 @@ export default class GalleryMedia extends Media {
   update (e) {
     const { id, onUpdate } = this.props
     e.preventDefault()
+
+    // Avoid empty update
+    if (this.prevState === this.state) return
+    this.prevState = this.state
+
     onUpdate(id, {
       reference: this.refs.reference.value,
       name: this.refs.name.value
@@ -54,6 +62,13 @@ export default class GalleryMedia extends Media {
     })
   }
 
+  onNameChange (e) {
+    e.preventDefault()
+    this.setState({
+      name: this.refs.name.value
+    })
+  }
+
   onShowCropTool (imageId, imageSrc, imageCaption, imageMetadata) {
     const { id, onShowCropTool } = this.props
     onShowCropTool(id, imageId, imageSrc, imageCaption, imageMetadata)
@@ -61,61 +76,57 @@ export default class GalleryMedia extends Media {
 
   render () {
     const {
-      id, reference, name, imageFiles,
-      onSort, onShowCropTool
+      id, reference, imageFiles, onSort
     } = this.props
 
-    const ref = this.state.reference !== '' ? this.state.reference : this.props.vid
-    const title = `${this.type} [${ref}]`
-
     const tooltip = (
-      <Tooltip id={`tooltip-delete-media-${id}`}>Delete</Tooltip>
+      <Tooltip id={`tooltip-delete-media-${id}`}>Delete Gallery</Tooltip>
     )
 
     return (
-      <div className='row'>
+      <div id={id} key={id}>
         <div className='panel panel-default'>
-          <div className='panel-heading'>
+          <div className='panel-heading panel-drag' style={{display: USER_ROLE !== 'admin' ? 'none' : 'block'}}>
             <div className='row'>
-              <div className='col-xs-8'>
-                <h4 className='panel-title'>{title}</h4>
-              </div>
-              <div className='col-xs-4'>
-                <a
-                  href='#'
-                  className='pull-right'
-                  style={{textDecoration: 'none', color: 'red'}}
-                  onClick={this.delete.bind(this)}>
-                  <OverlayTrigger placement='top' overlay={tooltip}>
-                    <FontAwesome name='times' />
-                  </OverlayTrigger>
-                </a>
+              <div className='col-xs-12'>
+                <div className='input-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    value={this.state.name}
+                    placeholder='Gallery Name'
+                    disabled={USER_ROLE !== 'admin'}
+                    ref='name'
+                    onChange={this.onNameChange.bind(this)}
+                    onBlur={this.update.bind(this)} />
+                  <div className='input-group-btn'>
+                    <OverlayTrigger placement='top' overlay={tooltip}>
+                      <button
+                        className='btn btn-danger pull-right'
+                        onClick={this.delete.bind(this)}>
+                          <FontAwesome name='times' />
+                      </button>
+                    </OverlayTrigger>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div className='panel-body'>
             <form role='form'>
-              <div className='form-group'>
-                <label>Reference</label>
+              <div className='form-group' style={{display: USER_ROLE !== 'admin' ? 'none' : 'block'}}>
+                <label>Key</label>
                 <input
                   type='text'
                   className='form-control'
                   defaultValue={reference}
+                  disabled={USER_ROLE !== 'admin'}
                   ref='reference'
                   onChange={this.onReferenceChange.bind(this)}
                   onBlur={this.update.bind(this)} />
               </div>
               <div className='form-group'>
-                <label>Name</label>
-                <input
-                  type='text'
-                  className='form-control'
-                  defaultValue={name}
-                  ref='name'
-                  onBlur={this.update.bind(this)} />
-              </div>
-              <div className='form-group'>
-                <label>Images</label>
+                <label>{this.state.name} images</label>
                 {imageFiles.length > 0 &&
                   <SortableImageList
                     key={Math.random()}

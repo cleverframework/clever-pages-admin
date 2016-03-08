@@ -2,6 +2,8 @@
 
 import React, { Component, PropTypes } from 'react'
 
+import { USER_ROLE } from '../constants/User'
+
 export default class Header extends Component {
 
   constructor (props) {
@@ -28,45 +30,45 @@ export default class Header extends Component {
   }
 
   renderForm () {
-    const { id, name, description } = this.props
+    const { id, name, description, title } = this.props
     return (
-      <div className='row'>
-        <div className='row'>
-          <h3>{this.state.name || `Page ${id}`}</h3>
-          <br />
-        </div>
-        <div className='row'>
-          <div className='panel panel-default'>
-            <div className='panel-heading'>
-              <h4 className='panel-title'>Header</h4>
-            </div>
-            <div className='panel-body'>
-              <form role='form'>
-                <div className='form-group'>
-                  <label>Name: </label>
-                  <input
-                    defaultValue={name}
-                    className='form-control'
-                    onChange={this.onNameChange.bind(this)}
-                    onBlur={this.onBlur.bind(this)}
-                    placeholder={'What\'s the name of your page?'}
-                    type='text'
-                    ref='name' />
-                </div>
-                <div className='form-group'>
-                  <label>Description: </label>
-                  <input
-                    defaultValue={description}
-                    className='form-control'
-                    onBlur={this.onBlur.bind(this)}
-                    placeholder={'What\'s the description of your page?'}
-                    type='text'
-                    ref='description' />
-                </div>
-              </form>
-            </div>
+      <div>
+        <h3>{this.state.name || `Page ${id}`}</h3>
+        <br />
+        <form role='form'>
+          <div className='form-group'>
+            <label>Name: </label>
+            <input
+              defaultValue={name}
+              className='form-control'
+              onChange={this.onNameChange.bind(this)}
+              onBlur={this.onBlur.bind(this)}
+              placeholder={'What\'s the name of your page?'}
+              disabled={USER_ROLE !== 'admin'}
+              type='text'
+              ref='name' />
           </div>
-        </div>
+          <div className='form-group'>
+            <label>Title: </label>
+            <input
+              defaultValue={title}
+              className='form-control'
+              onBlur={this.onBlur.bind(this)}
+              placeholder={'What\'s the title of your page?'}
+              type='text'
+              ref='description' />
+          </div>
+          <div className='form-group'>
+            <label>Description: </label>
+            <textarea
+              defaultValue={description}
+              className='form-control'
+              onBlur={this.onBlur.bind(this)}
+              placeholder={'What\'s the description of your page?'}
+              type='text'
+              ref='description'></textarea>
+          </div>
+        </form>
       </div>
     )
   }
@@ -80,5 +82,6 @@ export default class Header extends Component {
 Header.propTypes = {
   name: PropTypes.string,
   description: PropTypes.string,
+  title: PropTypes.string,
   onUpdate: PropTypes.func.isRequired
 }
